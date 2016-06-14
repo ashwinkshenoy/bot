@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+  <title>Exp | Terminal</title>
+  <meta charset="UTF-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <!--Font-Awesome-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.js"></script>
+  <script src="js/exp.js"></script>
+</head>
+<body ng-app="mainApp">
+  <div class="gradientCont" ng-controller="PostsCtrl">
+    <br><br>
+    <h1 class="head">The Terminal Bot</h1>
+    <br><br>
+    <div class="">
+      <div class="bar">
+        <div class="bubble red"></div>
+        <div class="bubble yellow"></div>
+        <div class="bubble green"></div>
+      </div>
+      <div class="mainCont">
+        <div class="terminalCont">
+          <div id="terminalReslutsCont"></div>
+          <form ng-submit="submitForm()">
+            <p class='spinner'>
+              <span class='ascii-spinner-1'>|</span>
+              <span class='ascii-spinner-2'>/</span>
+              <span class='ascii-spinner-3'>-</span>
+              <span class='ascii-spinner-4'>\</span>
+            </p>
+            <input type="text" id="terminalTextInput" autocomplete="off" placeholder="Try typing Hi or News or Weather in Bangalore" ng-model="form.ques" class="spacer"/>
+            <!-- <input type="submit" ngClick="Submit"> -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
