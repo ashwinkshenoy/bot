@@ -147,6 +147,49 @@ body, h1,h2,h3, p{
 
 }
 
+
+.bar {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  background: #f5f5dc;
+  width: 60%;
+  margin: 0px auto;
+  padding: 3px 10px;
+  border-radius: 4px 4px 0 0;
+}
+
+.bubble {
+  width: 10px;
+  height: 10px;
+  border-radius: 100rem;
+  display: inline-block;
+  margin-right: .3rem;
+  cursor: pointer;
+}
+
+.bubble:hover {
+  opacity: .6;
+}
+
+.bar .red {
+  background: #ea423f;
+}
+
+.bar .yellow {
+  background: #efb62c;
+}
+
+.bar .green {
+  background: #7ab300;
+}
+
+.angry {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  display: none;
+}
+
 /* Spinner */
 .spinner {
   z-index: 10;
@@ -507,39 +550,4 @@ body, h1,h2,h3, p{
   100% {
     opacity: 0;
   }
-}
-
-.bar {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  background: #f5f5dc;
-  width: 60%;
-  margin: 0px auto;
-  padding: 3px 10px;
-  border-radius: 4px 4px 0 0;
-}
-
-.bubble {
-  width: 10px;
-  height: 10px;
-  border-radius: 100rem;
-  display: inline-block;
-  margin-right: .3rem;
-  cursor: pointer;
-}
-
-.bubble:hover {
-  opacity: .6;
-}
-
-.bar .red {
-  background: #ea423f;
-}
-
-.bar .yellow {
-  background: #efb62c;
-}
-
-.bar .green {
-  background: #7ab300;
 }

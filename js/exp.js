@@ -23,19 +23,42 @@ app.controller('PostsCtrl', function($scope, $http) {
     scrollToBottomOfResults();
   }
 
+  // Speech
+  function speak(text, callback) {
+    var u = new SpeechSynthesisUtterance();
+    u.text = text;
+    u.lang = 'en-us';
+    u.name = 'female';
+
+    u.onend = function () {
+      if (callback) {
+        callback();
+      }
+    };
+
+    u.onerror = function (e) {
+      if (callback) {
+        callback(e);
+      }
+    };
+
+    speechSynthesis.speak(u);
+    hideSpinner();
+  }
+
   // Initial Text
   addTextToResults("-------------------------------------<h1>Hi, I am <span class='craft'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'News' or 'Weather in Bangalore'</p>-------------------------------------");
 
   // Clear text input
   var clearInput = function(){
     document.getElementById('terminalTextInput').value = "";
-    // hideSpinner();
   }
 
   // Opening links in a new window
   var openLinkInNewWindow = function(linkToOpen){
     window.open(linkToOpen, '_blank');
     clearInput();
+    hideSpinner();
   }
 
   // Getting the time and date and post it depending on what you request for
@@ -113,14 +136,6 @@ app.controller('PostsCtrl', function($scope, $http) {
           hideSpinner();
           break;
 
-        case "i love you":
-        case "love you":
-        case "love":
-          clearInput();
-          addTextToResults("Aww! That's so sweet 😍. Here's some love for you too ❤ ❤ ❤ !");
-          hideSpinner();
-          break;
-
         case "git":
           clearInput();
           addTextToResults("git is already installed! <br> git version 1.9.1");
@@ -142,13 +157,6 @@ app.controller('PostsCtrl', function($scope, $http) {
         case "cat":
           clearInput();
           addTextToResults("Meow!! 🐱<br> psst: try typing (cat videos)");
-          hideSpinner();
-          break;
-
-        case "what the":
-        case "wtf":
-          clearInput();
-          addTextToResults("Really! F*** off!");
           hideSpinner();
           break;
 
@@ -194,6 +202,10 @@ app.controller('PostsCtrl', function($scope, $http) {
         case "reboot":
         case "sudo reboot":
           clearInput();
+          $('.angry.reload').show();
+          setTimeout( function() {
+            $('.angry.reload').fadeOut(1000);
+          }, 3000);
           document.getElementById('terminalReslutsCont').innerHTML ="Rebooting TerBot...<br>";
           setTimeout( function() {
             addTextToResults("System is going down!");
@@ -218,12 +230,6 @@ app.controller('PostsCtrl', function($scope, $http) {
           }, 3000 );
           break;
 
-        case "clear":
-          clearInput();
-          document.getElementById('terminalReslutsCont').innerHTML ="";
-          hideSpinner();
-          break;
-
         default:
           clearInput();
           var url = "https://api.api.ai/v1/query";
@@ -242,14 +248,43 @@ app.controller('PostsCtrl', function($scope, $http) {
           }).
           success(function(data, status, headers, config) {
             $scope.posts = data;
-            //console.log($scope.posts.result);
+            // console.log($scope.posts.result.parameters.speech);
             var speechData = $scope.posts.result.speech;
-            hideSpinner();
+            var action = $scope.posts.result.action;
+            var params = $scope.posts.result.parameters;
             if(speechData) {
               addTextToResults("<p> " + speechData + "</p>");
             } else {
               addTextToResults("<p>Sorry couldn't get that!</p>");
             }
+            switch(action) {
+              case "action.speak":
+                speak(params.speech);
+                break;
+
+              case "action.clean":
+                document.getElementById('terminalReslutsCont').innerHTML ="";
+                break;
+
+              case "action.search":
+                openLinkInNewWindow('https://www.google.com/search?q=' + params.search);
+                break;
+
+              case "action.browse":
+                openLinkInNewWindow('http://www.'+params.domain);
+                break;
+
+              case "action.slang":
+                $('.angry.slang').show();
+                setTimeout( function() {
+                  $('.angry.slang').fadeOut(1000);
+                }, 3000);
+                break;
+
+              default:
+                break;
+            }
+            hideSpinner();
             clearInput();
           }).
           error(function(data, status, headers, config) {
@@ -268,15 +303,13 @@ app.controller('PostsCtrl', function($scope, $http) {
       showSpinner();
       if (textInputValue != ""){ //checking if text was entered
         addTextToResults("<p class='userEnteredText'>> " + textInputValue + "</p>");
-        if (textInputValueLowerCase.substr(0,5) == "open ") { //if the first 5 characters = open + space
-          addTextToResults("<i>The URL " + "<b>" + textInputValue.substr(5) + "</b>" + " should be opened now.</i>");
-          openLinkInNewWindow('http://' + textInputValueLowerCase.substr(5));
-        } else if (textInputValueLowerCase.substr(0,8) == "youtube ") {
+        // if (textInputValueLowerCase.substr(0,5) == "open ") { //if the first 5 characters = open + space
+        //   addTextToResults("<i>The URL " + "<b>" + textInputValue.substr(5) + "</b>" + " should be opened now.</i>");
+        //   openLinkInNewWindow('http://' + textInputValueLowerCase.substr(5));
+        //} else
+        if (textInputValueLowerCase.substr(0,8) == "youtube ") {
           addTextToResults("<i>I've searched on YouTube for " + "<b>" + textInputValue.substr(8) + "</b>" + " it should be opened now.</i>");
           openLinkInNewWindow('https://www.youtube.com/results?search_query=' + textInputValueLowerCase.substr(8));
-        } else if (textInputValueLowerCase.substr(0,7) == "google ") {
-          addTextToResults("<i>I've searched on Google for " + "<b>" + textInputValue.substr(7) + "</b>" + " it should be opened shortly.</i>");
-          openLinkInNewWindow('https://www.google.com/search?q=' + textInputValueLowerCase.substr(7));
         } else if (textInputValueLowerCase.substr(0,5) == "wiki "){
           addTextToResults("<i>I've searched on Wikipedia for " + "<b>" + textInputValue.substr(5) + "</b>" + " it should be opened now.</i>");
           openLinkInNewWindow('https://wikipedia.org/w/index.php?search=' + textInputValueLowerCase.substr(5));
