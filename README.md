@@ -6,6 +6,7 @@ There can be mistakes in the code or sometimes the bot might not understand as i
 
 Check out the [Demo](http://ashwinkshenoy.github.io/bot)
 
+
 [![Preview](http://i.imgur.com/21ycifP.png)](https://ashwinshenoy.com/bot)
 
-Do Let me know your thought on TerBot.
+Do Let me know your thought on TerBot :)

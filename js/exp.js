@@ -235,6 +235,7 @@ app.controller('PostsCtrl', function($scope, $http) {
               'lang' : 'EN',
             },
             headers: {
+              // PLZ: Use your authorization key, else you will train my bot, not yours!
               'Authorization': 'Bearer 553ab6017e584e0fa351952c8c9ca956',
               'Content-Type': 'application/json'
             }
