@@ -125,13 +125,13 @@ body, h1,h2,h3, p{
 
 
 /* Make me responsive */
-@media screen and (max-width: 1000px){
+@media screen and (max-width: 768px){
   .gradientCont{
     height: 220px;
   }
   .mainCont{
-    width: 100%;
-    padding: 0 12px;
+    width: 90%;
+    padding: 0 0;
   }
   .mainCont h2{
     font-size: 32px;
@@ -142,9 +142,12 @@ body, h1,h2,h3, p{
     margin: 0 0 40px 0;
   }
   #terminalReslutsCont{
-    height: 100px;
+    height: 100%;
   }
-
+  .bar,
+  #terminalTextInput {
+    width: 90% !important;
+  }
 }
 
 
@@ -188,6 +191,25 @@ body, h1,h2,h3, p{
   left: 0;
   top: 50%;
   display: none;
+}
+
+.footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  padding: 15px;
+}
+
+.foo-txt {
+  font-size: 15px;
+  font-weight: 300;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: none;
+  color: #272727;
+}
+
+.fa-heart {
+  color: #fb2323;
 }
 
 /* Spinner */
