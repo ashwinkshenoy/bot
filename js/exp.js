@@ -28,7 +28,7 @@ app.controller('PostsCtrl', function($scope, $http) {
     var u = new SpeechSynthesisUtterance();
     u.text = text;
     u.lang = 'en-us';
-    u.name = 'female';
+    u.name = 'male';
 
     u.onend = function () {
       if (callback) {
@@ -118,7 +118,6 @@ app.controller('PostsCtrl', function($scope, $http) {
   $scope.submitForm = function() {
     // console.log("posting data....");
     formData = $scope.form;
-
 
     // Having a specific text reply to specific strings
     var textReplies = function() {
@@ -301,6 +300,8 @@ app.controller('PostsCtrl', function($scope, $http) {
       textInputValue = document.getElementById('terminalTextInput').value.trim(); //get the text from the text input to a variable
       textInputValueLowerCase = textInputValue.toLowerCase(); //get the lower case of the string
       showSpinner();
+
+      //event.preventDefault();
       if (textInputValue != ""){ //checking if text was entered
         addTextToResults("<p class='userEnteredText'>> " + textInputValue + "</p>");
         // if (textInputValueLowerCase.substr(0,5) == "open ") { //if the first 5 characters = open + space
@@ -321,8 +322,9 @@ app.controller('PostsCtrl', function($scope, $http) {
         hideSpinner();
       }
     };
-
     checkWord();
   };
 
+});
+$(function() {
 });
