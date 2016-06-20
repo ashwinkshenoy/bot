@@ -61,34 +61,34 @@ app.controller('PostsCtrl', function($scope, $http) {
     hideSpinner();
   }
 
-  // Getting the time and date and post it depending on what you request for
-  var getTimeAndDate = function(postTimeDay){
-    var timeAndDate = new Date();
-    var timeHours = timeAndDate.getHours();
-    var timeMinutes = timeAndDate.getMinutes();
-    var dateDay = timeAndDate.getDate();
-    console.log(dateDay);
-    var dateMonth = timeAndDate.getMonth() + 1; // Because JS starts counting months from 0
-    var dateYear = timeAndDate.getFullYear(); // Otherwise we'll get the count like 98,99,100,101...etc.
+  // // Getting the time and date and post it depending on what you request for
+  // var getTimeAndDate = function(postTimeDay){
+  //   var timeAndDate = new Date();
+  //   var timeHours = timeAndDate.getHours();
+  //   var timeMinutes = timeAndDate.getMinutes();
+  //   var dateDay = timeAndDate.getDate();
+  //   console.log(dateDay);
+  //   var dateMonth = timeAndDate.getMonth() + 1; // Because JS starts counting months from 0
+  //   var dateYear = timeAndDate.getFullYear(); // Otherwise we'll get the count like 98,99,100,101...etc.
 
-    if (timeHours < 10){ // if 1 number display 0 before it.
-      timeHours = "0" + timeHours;
-    }
+  //   if (timeHours < 10){ // if 1 number display 0 before it.
+  //     timeHours = "0" + timeHours;
+  //   }
 
-    if (timeMinutes < 10){ // if 1 number display 0 before it.
-      timeMinutes = "0" + timeMinutes;
-    }
+  //   if (timeMinutes < 10){ // if 1 number display 0 before it.
+  //     timeMinutes = "0" + timeMinutes;
+  //   }
 
-    var currentTime = timeHours + ":" + timeMinutes;
-    var currentDate = dateDay + "/" + dateMonth + "/" + dateYear;
+  //   var currentTime = timeHours + ":" + timeMinutes;
+  //   var currentDate = dateDay + "/" + dateMonth + "/" + dateYear;
 
-    if (postTimeDay == "time"){
-      addTextToResults(currentTime);
-    }
-    if (postTimeDay == "date"){
-      addTextToResults(currentDate);
-    }
-  }
+  //   if (postTimeDay == "time"){
+  //     addTextToResults(currentTime);
+  //   }
+  //   if (postTimeDay == "date"){
+  //     addTextToResults(currentDate);
+  //   }
+  // }
 
   // Ascii Spinner
   var showSpinner = function() {
@@ -135,45 +135,6 @@ app.controller('PostsCtrl', function($scope, $http) {
           hideSpinner();
           break;
 
-        case "git":
-          clearInput();
-          addTextToResults("git is already installed! <br> git version 1.9.1");
-          hideSpinner();
-          break;
-
-        case "git status":
-          clearInput();
-          addTextToResults("nothing to commit, working directory clean!");
-          hideSpinner();
-          break;
-
-        case "git push origin master":
-          clearInput();
-          addTextToResults("Yeah! Push me baby!");
-          hideSpinner();
-          break;
-
-        case "cat":
-          clearInput();
-          addTextToResults("Meow!! 🐱<br> psst: try typing (cat videos)");
-          hideSpinner();
-          break;
-
-        case "cat videos":
-        case "cat v":
-          addTextToResults("Okay I'll show you some in YouTube.");
-          openLinkInNewWindow('https://www.youtube.com/results?search_query=cat videos');
-          hideSpinner();
-          break;
-
-        case "lol":
-        case "trololo":
-          addTextToResults("Mr. Trololo!");
-          openLinkInNewWindow('https://www.youtube.com/watch?v=1uTAJG3Khes');
-          hideSpinner();
-          break;
-        // funny replies [END]
-
         case "youtube":
           clearInput();
           addTextToResults("Type youtube + something to search for.");
@@ -184,49 +145,6 @@ app.controller('PostsCtrl', function($scope, $http) {
           clearInput();
           addTextToResults("Type google + something to search for.");
           hideSpinner();
-          break;
-
-        case "time":
-          clearInput();
-          getTimeAndDate("time");
-          hideSpinner();
-          break;
-
-        case "date":
-          clearInput();
-          getTimeAndDate("date");
-          hideSpinner();
-          break;
-
-        case "reboot":
-        case "sudo reboot":
-          clearInput();
-          $('.angry.reload').show();
-          setTimeout( function() {
-            $('.angry.reload').fadeOut(1000);
-          }, 3000);
-          document.getElementById('terminalReslutsCont').innerHTML ="Rebooting TerBot...<br>";
-          setTimeout( function() {
-            addTextToResults("System is going down!");
-          }, 1000 );
-          setTimeout( function() {
-            addTextToResults("-------------------------------------<h1>Hi, I am <span class='craft'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'News' or 'Weather in Bangalore'</p>-------------------------------------");
-            hideSpinner();
-          }, 3000 );
-          break;
-
-        case "update":
-        case "sudo apt-get update":
-        case "apt-get update":
-          clearInput();
-          document.getElementById('terminalReslutsCont').innerHTML ="Updating TerBot...<br>";
-          setTimeout( function() {
-            addTextToResults("System is Fetching data head!");
-          }, 1000 );
-          setTimeout( function() {
-            addTextToResults("System is Up-to date!");
-            hideSpinner();
-          }, 3000 );
           break;
 
         default:
@@ -251,29 +169,69 @@ app.controller('PostsCtrl', function($scope, $http) {
             var speechData = $scope.posts.result.speech;
             var action = $scope.posts.result.action;
             var params = $scope.posts.result.parameters;
-            if(speechData) {
-              addTextToResults("<p> " + speechData + "</p>");
-            } else {
-              addTextToResults("<p>Sorry couldn't get that!</p>");
-            }
             switch(action) {
               case "action.speak":
+                addTextToResults("<p> " + speechData + "</p>");
                 speak(params.speech);
                 break;
 
               case "action.clean":
+                addTextToResults("<p> " + speechData + "</p>");
                 document.getElementById('terminalReslutsCont').innerHTML ="";
                 break;
 
               case "action.search":
+                addTextToResults("<p> " + speechData + "</p>");
                 openLinkInNewWindow('https://www.google.com/search?q=' + params.search);
                 break;
 
               case "action.browse":
+                addTextToResults("<p> " + speechData + "</p>");
                 openLinkInNewWindow('http://www.'+params.domain);
                 break;
 
+              // case "action.joke":
+              //   $http({
+              //     method : "get",
+              //     // url : "https://crossorigin.me/http://www.yerkee.com/api/fortune/wisdom",
+              //     url : "http://tambal.azurewebsites.net/joke",
+              //   }).
+              //   success(function(response) {
+              //     // console.log(response.joke);
+              //     addTextToResults("<p>"+response.joke+"</p>");
+              //   }).
+              //   error(function(response) {
+              //     //$scope.myWelcome = response.statusText;
+              //     console.log("Error occured!");
+              //   });
+              //   break;
+
+              case "action.update":
+                document.getElementById('terminalReslutsCont').innerHTML ="Updating TerBot...<br>";
+                setTimeout( function() {
+                  addTextToResults("System is Fetching data head!");
+                }, 1000 );
+                setTimeout( function() {
+                  addTextToResults("System is Up-to date!");
+                }, 3000 );
+                break;
+
+              case "action.reboot":
+                $('.angry.reload').show();
+                setTimeout( function() {
+                  $('.angry.reload').fadeOut(1000);
+                }, 3000);
+                document.getElementById('terminalReslutsCont').innerHTML ="Rebooting TerBot...<br>";
+                setTimeout( function() {
+                  addTextToResults("System is going down!");
+                }, 1000 );
+                setTimeout( function() {
+                  addTextToResults("-------------------------------------<h1>Hi, I am <span class='craft'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'News' or 'Weather in Bangalore'</p>-------------------------------------");
+                }, 3000 );
+                break;
+
               case "action.slang":
+                addTextToResults("<p> " + speechData + "</p>");
                 $('.angry.slang').show();
                 setTimeout( function() {
                   $('.angry.slang').fadeOut(1000);
@@ -281,6 +239,11 @@ app.controller('PostsCtrl', function($scope, $http) {
                 break;
 
               default:
+                if(speechData) {
+                  addTextToResults("<p> " + speechData + "</p>");
+                } else {
+                  addTextToResults("<p>Sorry couldn't get that. I am still under Training!</p>");
+                }
                 break;
             }
             hideSpinner();
@@ -318,7 +281,7 @@ app.controller('PostsCtrl', function($scope, $http) {
           textReplies();
         }
       } else {
-        addTextToResults("Yo! I am an A.I. Not your astrologer :)");
+        // addTextToResults("Yo! I am an A.I. Not your astrologer :)");
         hideSpinner();
       }
     };
