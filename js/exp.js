@@ -61,35 +61,6 @@ app.controller('PostsCtrl', function($scope, $http) {
     hideSpinner();
   }
 
-  // // Getting the time and date and post it depending on what you request for
-  // var getTimeAndDate = function(postTimeDay){
-  //   var timeAndDate = new Date();
-  //   var timeHours = timeAndDate.getHours();
-  //   var timeMinutes = timeAndDate.getMinutes();
-  //   var dateDay = timeAndDate.getDate();
-  //   console.log(dateDay);
-  //   var dateMonth = timeAndDate.getMonth() + 1; // Because JS starts counting months from 0
-  //   var dateYear = timeAndDate.getFullYear(); // Otherwise we'll get the count like 98,99,100,101...etc.
-
-  //   if (timeHours < 10){ // if 1 number display 0 before it.
-  //     timeHours = "0" + timeHours;
-  //   }
-
-  //   if (timeMinutes < 10){ // if 1 number display 0 before it.
-  //     timeMinutes = "0" + timeMinutes;
-  //   }
-
-  //   var currentTime = timeHours + ":" + timeMinutes;
-  //   var currentDate = dateDay + "/" + dateMonth + "/" + dateYear;
-
-  //   if (postTimeDay == "time"){
-  //     addTextToResults(currentTime);
-  //   }
-  //   if (postTimeDay == "date"){
-  //     addTextToResults(currentDate);
-  //   }
-  // }
-
   // Ascii Spinner
   var showSpinner = function() {
     $('.spinner').show();
@@ -107,17 +78,11 @@ app.controller('PostsCtrl', function($scope, $http) {
   }
 
   var formData = {
-    ques: "default",
-  };
-
-  $scope.save = function() {
-    formData = $scope.form;
-    console.log(formData);
+    ques: "null",
   };
 
   $scope.submitForm = function() {
-    // console.log("posting data....");
-    formData = $scope.form;
+    var formData = $scope.form;
 
     // Having a specific text reply to specific strings
     var textReplies = function() {
@@ -190,21 +155,28 @@ app.controller('PostsCtrl', function($scope, $http) {
                 openLinkInNewWindow('http://www.'+params.domain);
                 break;
 
-              // case "action.joke":
-              //   $http({
-              //     method : "get",
-              //     // url : "https://crossorigin.me/http://www.yerkee.com/api/fortune/wisdom",
-              //     url : "http://tambal.azurewebsites.net/joke",
-              //   }).
-              //   success(function(response) {
-              //     // console.log(response.joke);
-              //     addTextToResults("<p>"+response.joke+"</p>");
-              //   }).
-              //   error(function(response) {
-              //     //$scope.myWelcome = response.statusText;
-              //     console.log("Error occured!");
-              //   });
-              //   break;
+              case "action.quote":
+                $http({
+                  method : "post",
+                  url : "https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous",
+                  headers: {
+                    // PLZ: Use your authorization keys (its free)!!
+                    // Link : https://market.mashape.com/andruxnet/random-famous-quotes
+                    'X-Mashape-Key': 'mcC6PSAJWFmshJcL3ZnBsNUdRXZXp1NKslVjsnoqC0Xlmpxkxx',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Accept': 'application/json',
+                  }
+                }).
+                success(function(response) {
+                  // console.log(response.joke);
+                  addTextToResults("<p>"+response.quote+"</p>");
+                  addTextToResults("<p>--"+response.author+"</p>");
+                }).
+                error(function(response) {
+                  //$scope.myWelcome = response.statusText;
+                  console.log("Error occured!");
+                });
+                break;
 
               case "action.update":
                 document.getElementById('terminalReslutsCont').innerHTML ="Updating TerBot...<br>";
@@ -260,17 +232,13 @@ app.controller('PostsCtrl', function($scope, $http) {
 
     // Main function to check the entered text and assign it to the correct function
     var checkWord = function() {
-      textInputValue = document.getElementById('terminalTextInput').value.trim(); //get the text from the text input to a variable
+      textInputValue = formData.ques.trim(); //get the text from the text input to a variable
       textInputValueLowerCase = textInputValue.toLowerCase(); //get the lower case of the string
       showSpinner();
 
       //event.preventDefault();
       if (textInputValue != ""){ //checking if text was entered
         addTextToResults("<p class='userEnteredText'>> " + textInputValue + "</p>");
-        // if (textInputValueLowerCase.substr(0,5) == "open ") { //if the first 5 characters = open + space
-        //   addTextToResults("<i>The URL " + "<b>" + textInputValue.substr(5) + "</b>" + " should be opened now.</i>");
-        //   openLinkInNewWindow('http://' + textInputValueLowerCase.substr(5));
-        //} else
         if (textInputValueLowerCase.substr(0,8) == "youtube ") {
           addTextToResults("<i>I've searched on YouTube for " + "<b>" + textInputValue.substr(8) + "</b>" + " it should be opened now.</i>");
           openLinkInNewWindow('https://www.youtube.com/results?search_query=' + textInputValueLowerCase.substr(8));
@@ -281,7 +249,7 @@ app.controller('PostsCtrl', function($scope, $http) {
           textReplies();
         }
       } else {
-        // addTextToResults("Yo! I am an A.I. Not your astrologer :)");
+        addTextToResults("Yo! Type something :)");
         hideSpinner();
       }
     };
