@@ -77,6 +77,37 @@ app.controller('PostsCtrl', function($scope, $http) {
     while (new Date().getTime() < start + delay);
   }
 
+  var session = function() {
+    // Retrieve the object from storage
+    var retrievedSession = localStorage.getItem('session');
+    if(retrievedSession) {
+      var session_send = retrievedSession;
+    } else {
+      // Random Number Generator
+      var randomNo = Math.floor((Math.random() * 100) + 1);
+      // get Timestamp
+      var timestamp = Date.now();
+      // get Day
+      var date = new Date();
+      var weekday = new Array(7);
+      weekday[0] = "Sunday";
+      weekday[1] = "Monday";
+      weekday[2] = "Tuesday";
+      weekday[3] = "Wednesday";
+      weekday[4] = "Thursday";
+      weekday[5] = "Friday";
+      weekday[6] = "Saturday";
+      var day = weekday[date.getDay()];
+      // Join random number+day+timestamp
+      var session_id = randomNo+day+timestamp;
+      // Put the object into storage
+      localStorage.setItem('session', session_id);
+      var retrievedSession = localStorage.getItem('session');
+    }
+    return retrievedSession;
+    // console.log('session: ', retrievedSession);
+  }
+
   var formData = {
     ques: "null",
   };
@@ -86,6 +117,9 @@ app.controller('PostsCtrl', function($scope, $http) {
 
     // Having a specific text reply to specific strings
     var textReplies = function() {
+
+      var mysession = session();
+
       switch(textInputValueLowerCase){
         // funny replies [START]
         case "ashwin":
@@ -121,6 +155,7 @@ app.controller('PostsCtrl', function($scope, $http) {
             data: {
               'query': formData.ques,
               'lang' : 'EN',
+              'sessionId':mysession
             },
             headers: {
               // PLZ: Use your authorization key, else you will train my bot, not yours!
