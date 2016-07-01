@@ -101,12 +101,23 @@ app.controller('PostsCtrl', function($scope, $http) {
       // Join random number+day+timestamp
       var session_id = randomNo+day+timestamp;
       // Put the object into storage
-      localStorage.setItem('session', session_id);
-      var retrievedSession = localStorage.getItem('session');
+      sessionStorage.setItem('session', session_id);
+      var retrievedSession = sessionStorage.getItem('session');
     }
     return retrievedSession;
     // console.log('session: ', retrievedSession);
   }
+
+  // var ip = function() {
+  //   $.getJSON('http://ipinfo.io', function(data){
+  //     console.log(data.loc);
+  //     var loc = data.loc
+  //     var partsOfStr = loc.split(',');
+  //     var lat = partsOfStr[0];
+  //     var long = partsOfStr[1];
+  //     return lat;
+  //   });
+  // }
 
   var formData = {
     ques: "null",
