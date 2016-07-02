@@ -22,6 +22,10 @@ app.controller('PostsCtrl', function($scope, $http) {
     document.getElementById('terminalReslutsCont').innerHTML += "<p>" + textToAdd + "</p>";
     scrollToBottomOfResults();
   }
+  var addTextToUser = function(textToAdd){
+    document.getElementById('terminalReslutsCont').innerHTML += "<p class='userEnteredText'>> " + textToAdd + "</p>";
+    scrollToBottomOfResults();
+  }
 
   // Speech
   function speak(text, callback) {
@@ -79,12 +83,11 @@ app.controller('PostsCtrl', function($scope, $http) {
 
   var session = function() {
     // Retrieve the object from storage
-    var retrievedSession = localStorage.getItem('session');
-    if(retrievedSession) {
-      var session_send = retrievedSession;
+    if(sessionStorage.getItem('session')) {
+      var retrievedSession = sessionStorage.getItem('session');
     } else {
       // Random Number Generator
-      var randomNo = Math.floor((Math.random() * 100) + 1);
+      var randomNo = Math.floor((Math.random() * 1000) + 1);
       // get Timestamp
       var timestamp = Date.now();
       // get Day
@@ -108,28 +111,81 @@ app.controller('PostsCtrl', function($scope, $http) {
     // console.log('session: ', retrievedSession);
   }
 
-  // var ip = function() {
-  //   $.getJSON('http://ipinfo.io', function(data){
-  //     console.log(data.loc);
-  //     var loc = data.loc
-  //     var partsOfStr = loc.split(',');
-  //     var lat = partsOfStr[0];
-  //     var long = partsOfStr[1];
-  //     return lat;
-  //   });
+  // save and retrieve data from storage
+  var savedinput = function(formVal) {
+    var getinput = JSON.parse(localStorage.getItem('saveinput'));
+    if(getinput == null) {
+      var inputval = [];
+      inputval[0] = formVal;
+      localStorage.setItem("saveinput", JSON.stringify(inputval));
+    } else {
+      getinput[(getinput.length)] = formVal;
+      localStorage.setItem("saveinput", JSON.stringify(getinput));
+      // console.log(getinput.length);
+    }
+  }
+
+  // angular.element(document).ready(function () {
+  //   if (localStorage.getItem('saveinput')){
+  //     var historyIndex = JSON.parse(localStorage.getItem('saveinput')).length;
+  //     var historyCount = JSON.parse(localStorage.getItem('saveinput')).length;
+  //     var historyinput = JSON.parse(localStorage.getItem('saveinput'));
+  //     console.log(historyIndex);
+  //   }
+  // });
+
+  // if (localStorage.getItem('saveinput')){
+  //   var historyIndex = JSON.parse(localStorage.getItem('saveinput')).length;
+  //   var historyCount = JSON.parse(localStorage.getItem('saveinput')).length;
+  //   var historyinput = JSON.parse(localStorage.getItem('saveinput'));
+  //   // console.log(historyIndex);
   // }
+
+  // document.onkeydown = function(e) {
+  // // $scope.key = function($event){
+  //   if (localStorage.getItem('saveinput')){
+  //     switch (e.keyCode) {
+  //       case 38:
+  //         // UP KEY
+  //         historyIndex--;
+  //         if (historyIndex < 0){
+  //           historyIndex++;
+  //         }
+  //         clearInput();
+  //         $("#terminalTextInput").val(historyinput[historyIndex]);
+  //         break;
+  //       case 40:
+  //         // DOWN KEY
+  //         historyIndex++;
+  //         if (historyIndex > historyCount-1) {
+  //           historyIndex--;
+  //         }
+  //         clearInput();
+  //         $("#terminalTextInput").val(historyinput[historyIndex]);
+  //         break;
+  //     }
+  //   } else {
+  //     console.log("no old cmds");
+  //   }
+  // };
+  // save and retrieve data from storage - end
+
 
   var formData = {
     ques: "null",
   };
 
   $scope.submitForm = function() {
-    var formData = $scope.form;
+    formData = $scope.form;
 
     // Having a specific text reply to specific strings
     var textReplies = function() {
 
+      // Create/call sessionid
       var mysession = session();
+
+      // Save input to locala storage
+      savedinput(formData.ques);
 
       switch(textInputValueLowerCase){
         // funny replies [START]
@@ -161,12 +217,12 @@ app.controller('PostsCtrl', function($scope, $http) {
           clearInput();
           var url = "https://api.api.ai/v1/query";
           $http({
-            method: 'post',
+            method: 'POST',
             url: url,
             data: {
               'query': formData.ques,
               'lang' : 'EN',
-              'sessionId':mysession
+              'sessionId':mysession,
             },
             headers: {
               // PLZ: Use your authorization key, else you will train my bot, not yours!
@@ -182,22 +238,22 @@ app.controller('PostsCtrl', function($scope, $http) {
             var params = $scope.posts.result.parameters;
             switch(action) {
               case "action.speak":
-                addTextToResults("<p> " + speechData + "</p>");
+                addTextToResults(speechData);
                 speak(params.speech);
                 break;
 
               case "action.clean":
-                addTextToResults("<p> " + speechData + "</p>");
+                addTextToResults(speechData);
                 document.getElementById('terminalReslutsCont').innerHTML ="";
                 break;
 
               case "action.search":
-                addTextToResults("<p> " + speechData + "</p>");
+                addTextToResults(speechData);
                 openLinkInNewWindow('https://www.google.com/search?q=' + params.search);
                 break;
 
               case "action.browse":
-                addTextToResults("<p> " + speechData + "</p>");
+                addTextToResults(speechData);
                 openLinkInNewWindow('http://www.'+params.domain);
                 break;
 
@@ -215,8 +271,8 @@ app.controller('PostsCtrl', function($scope, $http) {
                 }).
                 success(function(response) {
                   // console.log(response.joke);
-                  addTextToResults("<p>"+response.quote+"</p>");
-                  addTextToResults("<p>--"+response.author+"</p>");
+                  addTextToResults(response.quote);
+                  addTextToResults(response.author);
                 }).
                 error(function(response) {
                   //$scope.myWelcome = response.statusText;
@@ -249,7 +305,7 @@ app.controller('PostsCtrl', function($scope, $http) {
                 break;
 
               case "action.slang":
-                addTextToResults("<p> " + speechData + "</p>");
+                addTextToResults(speechData);
                 $('.angry.slang').show();
                 setTimeout( function() {
                   $('.angry.slang').fadeOut(1000);
@@ -258,9 +314,9 @@ app.controller('PostsCtrl', function($scope, $http) {
 
               default:
                 if(speechData) {
-                  addTextToResults("<p> " + speechData + "</p>");
+                  addTextToResults(speechData);
                 } else {
-                  addTextToResults("<p>Sorry couldn't get that. I am still under Training!</p>");
+                  addTextToResults("Sorry couldn't get that. I am still under Training!");
                 }
                 break;
             }
@@ -284,7 +340,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 
       //event.preventDefault();
       if (textInputValue != ""){ //checking if text was entered
-        addTextToResults("<p class='userEnteredText'>> " + textInputValue + "</p>");
+        addTextToUser(textInputValue);
         if (textInputValueLowerCase.substr(0,8) == "youtube ") {
           addTextToResults("<i>I've searched on YouTube for " + "<b>" + textInputValue.substr(8) + "</b>" + " it should be opened now.</i>");
           openLinkInNewWindow('https://www.youtube.com/results?search_query=' + textInputValueLowerCase.substr(8));
