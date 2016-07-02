@@ -359,5 +359,4 @@ app.controller('PostsCtrl', function($scope, $http) {
   };
 
 });
-$(function() {
-});
+
