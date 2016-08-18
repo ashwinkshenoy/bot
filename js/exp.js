@@ -112,18 +112,18 @@ app.controller('PostsCtrl', function($scope, $http) {
   }
 
   // save and retrieve data from storage
-  var savedinput = function(formVal) {
-    var getinput = JSON.parse(localStorage.getItem('saveinput'));
-    if(getinput == null) {
-      var inputval = [];
-      inputval[0] = formVal;
-      localStorage.setItem("saveinput", JSON.stringify(inputval));
-    } else {
-      getinput[(getinput.length)] = formVal;
-      localStorage.setItem("saveinput", JSON.stringify(getinput));
-      // console.log(getinput.length);
-    }
-  }
+  // var savedinput = function(formVal) {
+  //   var getinput = JSON.parse(localStorage.getItem('saveinput'));
+  //   if(getinput == null) {
+  //     var inputval = [];
+  //     inputval[0] = formVal;
+  //     localStorage.setItem("saveinput", JSON.stringify(inputval));
+  //   } else {
+  //     getinput[(getinput.length)] = formVal;
+  //     localStorage.setItem("saveinput", JSON.stringify(getinput));
+  //     // console.log(getinput.length);
+  //   }
+  // }
 
   // angular.element(document).ready(function () {
   //   if (localStorage.getItem('saveinput')){
@@ -185,21 +185,9 @@ app.controller('PostsCtrl', function($scope, $http) {
       var mysession = session();
 
       // Save input to locala storage
-      savedinput(formData.ques);
+      // savedinput(formData.ques);
 
       switch(textInputValueLowerCase){
-        // funny replies [START]
-        case "ashwin":
-          clearInput();
-          addTextToResults("He's my maker <a target='_blank' href='https://twitter.com/ashwinkshenoy'>@ashwinkshenoy</a>");
-          hideSpinner();
-          break;
-
-        case "mohan":
-          clearInput();
-          addTextToResults("He's Been called the joker @foofys");
-          hideSpinner();
-          break;
 
         case "youtube":
           clearInput();
@@ -325,7 +313,7 @@ app.controller('PostsCtrl', function($scope, $http) {
           }).
           error(function(data, status, headers, config) {
             hideSpinner();
-            addTextToResults("<p>Error occured. Plz Try Again!</p>");
+            addTextToResults("Error occured. Plz Try Again!");
             clearInput();
           });
           break;
