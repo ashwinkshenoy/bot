@@ -51,7 +51,7 @@ app.controller('PostsCtrl', function($scope, $http) {
   }
 
   // Initial Text
-  addTextToResults("-------------------------------------<h1>Hi, I am <span class='craft'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'News' or 'Weather in Bangalore'</p>-------------------------------------");
+  addTextToResults("-------------------------------------<h1>Hi, I am <span class='craft'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'News' or 'Today's Quote'</p>-------------------------------------");
 
   // Clear text input
   var clearInput = function(){
