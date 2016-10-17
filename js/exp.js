@@ -203,15 +203,15 @@ app.controller('PostsCtrl', function($scope, $http) {
 
         default:
           clearInput();
-          var url = "https://api.api.ai/v1/query";
+          var url = 'https://api.api.ai/v1/query?v=20150910&query='+formData.ques+'&lang=en-us&sessionId='+mysession;
           $http({
-            method: 'POST',
+            method: 'GET',
             url: url,
-            data: {
-              'query': formData.ques,
-              'lang' : 'EN',
-              'sessionId':mysession,
-            },
+            // data: {
+            //   'query': formData.ques,
+            //   'lang' : 'EN',
+            //   'sessionId':mysession,
+            // },
             headers: {
               // PLZ: Use your authorization key, else you will train my bot, not yours!
               'Authorization': 'Bearer 553ab6017e584e0fa351952c8c9ca956',
@@ -221,7 +221,7 @@ app.controller('PostsCtrl', function($scope, $http) {
           success(function(data, status, headers, config) {
             $scope.posts = data;
             // console.log($scope.posts.result.parameters.speech);
-            var speechData = $scope.posts.result.speech;
+            var speechData = $scope.posts.result.fulfillment.speech;
             var action = $scope.posts.result.action;
             var params = $scope.posts.result.parameters;
             switch(action) {
@@ -243,29 +243,6 @@ app.controller('PostsCtrl', function($scope, $http) {
               case "action.browse":
                 addTextToResults(speechData);
                 openLinkInNewWindow('http://www.'+params.domain);
-                break;
-
-              case "action.quote":
-                $http({
-                  method : "post",
-                  url : "https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous",
-                  headers: {
-                    // PLZ: Use your authorization keys (its free)!!
-                    // Link : https://market.mashape.com/andruxnet/random-famous-quotes
-                    'X-Mashape-Key': 'mcC6PSAJWFmshJcL3ZnBsNUdRXZXp1NKslVjsnoqC0Xlmpxkxx',
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Accept': 'application/json',
-                  }
-                }).
-                success(function(response) {
-                  // console.log(response.joke);
-                  addTextToResults(response.quote);
-                  addTextToResults(response.author);
-                }).
-                error(function(response) {
-                  //$scope.myWelcome = response.statusText;
-                  console.log("Error occured!");
-                });
                 break;
 
               case "action.update":
@@ -304,7 +281,7 @@ app.controller('PostsCtrl', function($scope, $http) {
                 if(speechData) {
                   addTextToResults(speechData);
                 } else {
-                  addTextToResults("Sorry couldn't get that. I am still under Training!");
+                  addTextToResults("Oops! 🤦 Couldn't get that. Let's try something different. 🤔");
                 }
                 break;
             }
