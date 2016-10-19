@@ -177,6 +177,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 
   $scope.submitForm = function() {
     formData = $scope.form;
+    $scope.path = "img/plain.jpg";
 
     // Having a specific text reply to specific strings
     var textReplies = function() {
@@ -275,6 +276,22 @@ app.controller('PostsCtrl', function($scope, $http) {
                 setTimeout( function() {
                   $('.angry.slang').fadeOut(1000);
                 }, 3000);
+                break;
+
+              case "action.person":
+                addTextToResults(speechData);
+                if(speechData != "") {
+                  var img_path = $scope.posts.result.fulfillment.data.image;
+                  $('.s_p_img').fadeIn();
+                  if(img_path != "") {
+                    $scope.path = img_path;
+                    setTimeout( function() {
+                      $('.s_p_img').fadeOut(3000);
+                    }, 3000);
+                  }
+                } else {
+                  addTextToResults("Oops! 🤦 Couldn't get that. Let's try something different. 🤔");
+                }
                 break;
 
               default:

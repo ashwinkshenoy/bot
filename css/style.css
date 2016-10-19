@@ -150,7 +150,6 @@ body, h1,h2,h3, p{
   }
 }
 
-
 .bar {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -277,6 +276,15 @@ body, h1,h2,h3, p{
   -o-animation: loading-4 500ms ease-in infinite;
   animation: loading-4 500ms ease-in infinite;
 }
+
+.img_vid {
+  position: absolute;
+  top: 200px;
+  width: 270px;
+}
+
+
+/* Keyframes */
 @-webkit-keyframes loading-1 {
   0% {
     opacity: 0;
@@ -573,3 +581,4 @@ body, h1,h2,h3, p{
     opacity: 0;
   }
 }
+/* Keyframes end */
