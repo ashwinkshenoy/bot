@@ -285,10 +285,8 @@ app.controller('PostsCtrl', function($scope, $http) {
                 showSpinner();
                 if(params.city != "") {
                   var city = params.city
-                  console.log(city);
                 } else {
                   var city = params.address
-                  console.log(city);
                 }
                 var url = 'http://maps.googleapis.com/maps/api/geocode/json?address='+city+'&sensor=false';
                 $http({
@@ -317,8 +315,7 @@ app.controller('PostsCtrl', function($scope, $http) {
                   }).
                   success(function(data, status, headers, config) {
                     $scope.res = data;
-                    addTextToResults($scope.res.displayText);
-                    console.log($scope.res.data);
+                    addTextToResults(speechData);
                     hideSpinner();
                   }).
                   error(function(data, status, headers, config) {
