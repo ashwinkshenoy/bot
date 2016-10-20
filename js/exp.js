@@ -282,11 +282,6 @@ app.controller('PostsCtrl', function($scope, $http) {
                 break;
 
               case "action.restaurant":
-                var options = {
-                  enableHighAccuracy: true,
-                  timeout: 5000,
-                  maximumAge: 0
-                };
 
                 function success(pos) {
                   showSpinner();
@@ -295,9 +290,8 @@ app.controller('PostsCtrl', function($scope, $http) {
                   console.log('Your current position is:');
                   console.log('Latitude : ' + crd.latitude);
                   console.log('Longitude: ' + crd.longitude);
-                  console.log('More or less ' + crd.accuracy + ' meters.');
 
-                  var url = 'http://chat-bot-1.herokuapp.com/webhooks';
+                  var url = 'https://chat-bot-1.herokuapp.com/webhooks';
                   $http({
                     method: 'POST',
                     url: url,
@@ -326,10 +320,10 @@ app.controller('PostsCtrl', function($scope, $http) {
 
                 function error(err) {
                   console.warn('ERROR(' + err.code + '): ' + err.message);
-                  addTextToResults("Please enable location, so that we can help you out better!<br /> In case you blocked it, you can enable it by clicking on location icon on the address bar and clear the settings!");
+                  // addTextToResults("Please enable location, so that we can help you out better!<br /> In case you blocked it, you can enable it by clicking on location icon on the address bar and clear the settings!");
                 };
 
-                navigator.geolocation.getCurrentPosition(success, error, options);
+                navigator.geolocation.getCurrentPosition(success, error);
               break;
 
               case "action.person":
