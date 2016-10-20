@@ -45,7 +45,7 @@
 
     <div class="img_vid">
       <img alt="" ng-src="{{ path }}" class="s_p_img img-responsive">
-      <div class="restaurant_div" ng-repeat="results in res.data.zomato | limitTo:10">
+      <div class="restaurant_div" ng-repeat="results in res.data.zomato | limitTo:20">
         <div class="res_list_div" target="_blank">
           <a ng-href="{{ results.url }}" target="_blank">
             <div class="res_name" ng-bind="results.name"></div>

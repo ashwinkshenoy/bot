@@ -282,15 +282,25 @@ app.controller('PostsCtrl', function($scope, $http) {
                 break;
 
               case "action.restaurant":
-
-                function success(pos) {
+                showSpinner();
+                if(params.city != "") {
+                  var city = params.city
+                  console.log(city);
+                } else {
+                  var city = params.address
+                  console.log(city);
+                }
+                var url = 'http://maps.googleapis.com/maps/api/geocode/json?address='+city+'&sensor=false';
+                $http({
+                  method: 'get',
+                  url: url,
+                }).
+                success(function(data, status, headers, config) {
                   showSpinner();
-                  var crd = pos.coords;
-
-                  console.log('Your current position is:');
-                  console.log('Latitude : ' + crd.latitude);
-                  console.log('Longitude: ' + crd.longitude);
-
+                  $scope.res = data;
+                  var lat = $scope.res.results[0].geometry.location.lat;
+                  var long = $scope.res.results[0].geometry.location.lng;
+                  // call restau api
                   var url = 'https://chat-bot-1.herokuapp.com/webhooks';
                   $http({
                     method: 'POST',
@@ -300,8 +310,8 @@ app.controller('PostsCtrl', function($scope, $http) {
                         "resolvedQuery": $scope.posts.result.resolvedQuery,
                         "action" : "action.restaurant",
                         "sessionId": $scope.posts.sessionId,
-                        "latitude": crd.latitude,
-                        "longitude": crd.longitude
+                        "latitude": lat,
+                        "longitude": long
                       }
                     },
                   }).
@@ -316,14 +326,13 @@ app.controller('PostsCtrl', function($scope, $http) {
                     addTextToResults("Error occured. Plz Try Again!");
                     clearInput();
                   });
-                };
+                }).
+                error(function(data, status, headers, config) {
+                  hideSpinner();
+                  addTextToResults("Error occured. Plz Try Again!");
+                  clearInput();
+                });
 
-                function error(err) {
-                  console.warn('ERROR(' + err.code + '): ' + err.message);
-                  // addTextToResults("Please enable location, so that we can help you out better!<br /> In case you blocked it, you can enable it by clicking on location icon on the address bar and clear the settings!");
-                };
-
-                navigator.geolocation.getCurrentPosition(success, error);
               break;
 
               case "action.person":
