@@ -175,9 +175,12 @@ app.controller('PostsCtrl', function($scope, $http) {
     ques: "null",
   };
 
+
+
   $scope.submitForm = function() {
     formData = $scope.form;
     $scope.path = "img/plain.jpg";
+    $scope.res = "";
 
     // Having a specific text reply to specific strings
     var textReplies = function() {
@@ -278,6 +281,57 @@ app.controller('PostsCtrl', function($scope, $http) {
                 }, 3000);
                 break;
 
+              case "action.restaurant":
+                var options = {
+                  enableHighAccuracy: true,
+                  timeout: 5000,
+                  maximumAge: 0
+                };
+
+                function success(pos) {
+                  showSpinner();
+                  var crd = pos.coords;
+
+                  console.log('Your current position is:');
+                  console.log('Latitude : ' + crd.latitude);
+                  console.log('Longitude: ' + crd.longitude);
+                  console.log('More or less ' + crd.accuracy + ' meters.');
+
+                  var url = 'http://chat-bot-1.herokuapp.com/webhooks';
+                  $http({
+                    method: 'POST',
+                    url: url,
+                    data: {
+                      "result": {
+                        "resolvedQuery": $scope.posts.result.resolvedQuery,
+                        "action" : "action.restaurant",
+                        "sessionId": $scope.posts.sessionId,
+                        "latitude": crd.latitude,
+                        "longitude": crd.longitude
+                      }
+                    },
+                  }).
+                  success(function(data, status, headers, config) {
+                    $scope.res = data;
+                    addTextToResults($scope.res.displayText);
+                    console.log($scope.res.data);
+                    hideSpinner();
+                  }).
+                  error(function(data, status, headers, config) {
+                    hideSpinner();
+                    addTextToResults("Error occured. Plz Try Again!");
+                    clearInput();
+                  });
+                };
+
+                function error(err) {
+                  console.warn('ERROR(' + err.code + '): ' + err.message);
+                  addTextToResults("Please enable location, so that we can help you out better!<br /> In case you blocked it, you can enable it by clicking on location icon on the address bar and clear the settings!");
+                };
+
+                navigator.geolocation.getCurrentPosition(success, error, options);
+              break;
+
               case "action.person":
                 addTextToResults(speechData);
                 if(speechData != "") {
@@ -287,7 +341,7 @@ app.controller('PostsCtrl', function($scope, $http) {
                     $scope.path = img_path;
                     setTimeout( function() {
                       $('.s_p_img').fadeOut(3000);
-                    }, 3000);
+                    }, 5000);
                   }
                 } else {
                   addTextToResults("Oops! 🤦 Couldn't get that. Let's try something different. 🤔");

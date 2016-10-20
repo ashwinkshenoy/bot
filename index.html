@@ -10,9 +10,7 @@
   <!--JS-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.js"></script>
   <script src="js/exp.js"></script>
-
 </head>
 <body ng-app="mainApp">
   <div class="gradientCont" ng-controller="PostsCtrl">
@@ -44,9 +42,23 @@
     <img src="img/angrybird.png" alt="i am angry" class="angry slang">
     <img src="img/angryload.png" alt="i am angry" class="angry reload">
     <a href="https://github.com/ashwinkshenoy/bot"><img style="position: absolute; top: 0; right: 0; border: 0;" src="img/fork.png"></a>
+
     <div class="img_vid">
       <img alt="" ng-src="{{ path }}" class="s_p_img img-responsive">
-    </div>
+      <div class="restaurant_div" ng-repeat="results in res.data.zomato | limitTo:10">
+        <div class="res_list_div" target="_blank">
+          <a ng-href="{{ results.url }}" target="_blank">
+            <div class="res_name" ng-bind="results.name"></div>
+            <div class="res_bg" ng-style="{'background-image': 'url(' + results.thumb  + ')'}"></div>
+            <div class="res_type" ng-bind="'Cuisines: ' + results.cuisines"></div>
+            <div class="res_star">
+              <span ng-style="{'background': '#'+results.rating_color }" ng-bind="results.rating  + ' / 5'"></span>
+            </div>
+          </a>
+        </div>
+      </div><!--restaurant_div-->
+    </div><!--img_vid div-->
+
   </div><!--gradientCont end-->
   <div class="footer text-center">
     <span class="foo-txt">
