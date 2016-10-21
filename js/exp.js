@@ -282,53 +282,9 @@ app.controller('PostsCtrl', function($scope, $http) {
                 break;
 
               case "action.restaurant":
-                showSpinner();
-                if(params.city != "") {
-                  var city = params.city
-                } else {
-                  var city = params.address
-                }
-                var url = 'http://maps.googleapis.com/maps/api/geocode/json?address='+city+'&sensor=false';
-                $http({
-                  method: 'get',
-                  url: url,
-                }).
-                success(function(data, status, headers, config) {
-                  showSpinner();
-                  $scope.res = data;
-                  var lat = $scope.res.results[0].geometry.location.lat;
-                  var long = $scope.res.results[0].geometry.location.lng;
-                  // call restau api
-                  var url = 'https://chat-bot-1.herokuapp.com/webhooks';
-                  $http({
-                    method: 'POST',
-                    url: url,
-                    data: {
-                      "result": {
-                        "resolvedQuery": $scope.posts.result.resolvedQuery,
-                        "action" : "action.restaurant",
-                        "sessionId": $scope.posts.sessionId,
-                        "latitude": lat,
-                        "longitude": long
-                      }
-                    },
-                  }).
-                  success(function(data, status, headers, config) {
-                    $scope.res = data;
-                    addTextToResults(speechData);
-                    hideSpinner();
-                  }).
-                  error(function(data, status, headers, config) {
-                    hideSpinner();
-                    addTextToResults("Error occured. Plz Try Again!");
-                    clearInput();
-                  });
-                }).
-                error(function(data, status, headers, config) {
-                  hideSpinner();
-                  addTextToResults("Error occured. Plz Try Again!");
-                  clearInput();
-                });
+                $scope.res = $scope.posts.result.fulfillment;
+                addTextToResults(speechData);
+                hideSpinner();
 
               break;
 
