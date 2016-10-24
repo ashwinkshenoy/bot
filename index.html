@@ -6,10 +6,13 @@
   <!-- CSS -->
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/slick.css">
+  <link rel="stylesheet" href="css/slick-theme.css">
   <link rel="stylesheet" href="css/style.css">
   <!--JS-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="js/slick.min.js"></script>
   <script src="js/exp.js"></script>
 </head>
 <body ng-app="mainApp">
@@ -25,7 +28,7 @@
       </div><!--bar end-->
       <div class="mainCont">
         <div class="terminalCont">
-          <div id="terminalReslutsCont"></div>
+          <div id="terminalResultsCont"></div>
           <form ng-submit="submitForm()">
             <p class='spinner'>
               <span class='ascii-spinner-1'>|</span>
@@ -45,7 +48,7 @@
 
     <div class="img_vid">
       <img alt="" ng-src="{{ path }}" class="s_p_img img-responsive">
-      <div class="restaurant_div" ng-repeat="results in res.data.zomato | limitTo:30">
+      <!-- <div class="restaurant_div" ng-repeat="results in res.data.zomato | limitTo:30">
         <div class="res_list_div" target="_blank">
           <a ng-href="{{ results.url }}" target="_blank">
             <div class="res_name" ng-bind="results.name"></div>

@@ -13,18 +13,51 @@ app.controller('PostsCtrl', function($scope, $http) {
 
   // Scroll to the bottom of the results div
   var scrollToBottomOfResults = function(){
-    var terminalResultsDiv = document.getElementById('terminalReslutsCont');
+    var terminalResultsDiv = document.getElementById('terminalResultsCont');
     terminalResultsDiv.scrollTop = terminalResultsDiv.scrollHeight;
   }
 
   // Add Text to terminal
   var addTextToResults = function(textToAdd){
-    document.getElementById('terminalReslutsCont').innerHTML += "<p>" + textToAdd + "</p>";
+    document.getElementById('terminalResultsCont').innerHTML += "<p>" + textToAdd + "</p>";
     scrollToBottomOfResults();
   }
   var addTextToUser = function(textToAdd){
-    document.getElementById('terminalReslutsCont').innerHTML += "<p class='userEnteredText'>> " + textToAdd + "</p>";
+    document.getElementById('terminalResultsCont').innerHTML += "<p class='userEnteredText'>> " + textToAdd + "</p>";
     scrollToBottomOfResults();
+  }
+  // Add Restaurants to terminal
+  var addSlider = function(results){
+    var list_length = results.data.zomato.length;
+    var results = results.data.zomato;
+    var terminalResultsDiv = document.getElementById('terminalResultsCont');
+    var dt = $.now();
+    var slider_name = 'foo_slider_'+ dt;
+    terminalResultsDiv.innerHTML += "<div class='item_slider "+ slider_name +"'></div>";
+    for(i=0;i<list_length;i++){
+      var template = '<div>';
+      template += '<div class="res_list_div">';
+      template += '<a href="'+results[i].url+'" target="_blank">';
+      template += '<div class="res_name">'+results[i].name+'</div>';
+      template += '<div class="res_bg" style="background: url('+results[i].thumb +');"></div>';
+      template += '<div class="res_type">'+results[i].cuisines+'</div>';
+      template += '<div class="res_star">';
+      template += '<span style="background: #'+results[i].rating_color+'">'+results[i].rating+' / 5</span>';
+      template += '</div>';
+      template += '</a>';
+      template += '</div><!--res_list_div-->';
+      template += '</div>';
+      $("."+slider_name).append(template);
+      console.log(slider_name);
+    }
+    $("."+slider_name).slick({
+      dots: false,
+      infinite: true,
+      speed: 1000,
+      slidesToShow: 2,
+      slidesToScroll: 1,
+    });
+    terminalResultsDiv.scrollTop = terminalResultsDiv.scrollHeight;
   }
 
   // Speech
@@ -33,25 +66,22 @@ app.controller('PostsCtrl', function($scope, $http) {
     u.text = text;
     u.lang = 'en-us';
     u.name = 'male';
-
     u.onend = function () {
       if (callback) {
         callback();
       }
     };
-
     u.onerror = function (e) {
       if (callback) {
         callback(e);
       }
     };
-
     speechSynthesis.speak(u);
     hideSpinner();
   }
 
   // Initial Text
-  addTextToResults("-------------------------------------<h1>Hi, I am <span class='craft'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'News' or 'Today's Quote'</p>-------------------------------------");
+  addTextToResults("-------------------------------------<h1>Hi, I am <span class='terbot'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'Weather in New York' or 'Today's Quote'</p>-------------------------------------");
 
   // Clear text input
   var clearInput = function(){
@@ -175,8 +205,6 @@ app.controller('PostsCtrl', function($scope, $http) {
     ques: "null",
   };
 
-
-
   $scope.submitForm = function() {
     formData = $scope.form;
     $scope.path = "img/plain.jpg";
@@ -188,7 +216,7 @@ app.controller('PostsCtrl', function($scope, $http) {
       // Create/call sessionid
       var mysession = session();
 
-      // Save input to locala storage
+      // Save input to local storage
       // savedinput(formData.ques);
 
       switch(textInputValueLowerCase){
@@ -197,13 +225,13 @@ app.controller('PostsCtrl', function($scope, $http) {
           clearInput();
           addTextToResults("Type youtube + something to search for.");
           hideSpinner();
-          break;
+        break;
 
         case "google":
           clearInput();
           addTextToResults("Type google + something to search for.");
           hideSpinner();
-          break;
+        break;
 
         default:
           clearInput();
@@ -232,22 +260,22 @@ app.controller('PostsCtrl', function($scope, $http) {
               case "action.speak":
                 addTextToResults(speechData);
                 speak(params.speech);
-                break;
+              break;
 
               case "action.clean":
                 addTextToResults(speechData);
                 document.getElementById('terminalReslutsCont').innerHTML ="";
-                break;
+              break;
 
               case "action.search":
                 addTextToResults(speechData);
                 openLinkInNewWindow('https://www.google.com/search?q=' + params.search);
-                break;
+              break;
 
               case "action.browse":
                 addTextToResults(speechData);
                 openLinkInNewWindow('http://www.'+params.domain);
-                break;
+              break;
 
               case "action.update":
                 document.getElementById('terminalReslutsCont').innerHTML ="Updating TerBot...<br>";
@@ -257,7 +285,7 @@ app.controller('PostsCtrl', function($scope, $http) {
                 setTimeout( function() {
                   addTextToResults("System is Up-to date!");
                 }, 3000 );
-                break;
+              break;
 
               case "action.reboot":
                 $('.angry.reload').show();
@@ -271,7 +299,7 @@ app.controller('PostsCtrl', function($scope, $http) {
                 setTimeout( function() {
                   addTextToResults("-------------------------------------<h1>Hi, I am <span class='craft'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'News' or 'Weather in Bangalore'</p>-------------------------------------");
                 }, 3000 );
-                break;
+              break;
 
               case "action.slang":
                 addTextToResults(speechData);
@@ -279,13 +307,12 @@ app.controller('PostsCtrl', function($scope, $http) {
                 setTimeout( function() {
                   $('.angry.slang').fadeOut(1000);
                 }, 3000);
-                break;
+              break;
 
               case "action.restaurant":
-                $scope.res = $scope.posts.result.fulfillment;
                 addTextToResults(speechData);
+                addSlider($scope.posts.result.fulfillment);
                 hideSpinner();
-
               break;
 
               case "action.person":
@@ -302,7 +329,7 @@ app.controller('PostsCtrl', function($scope, $http) {
                 } else {
                   addTextToResults("Oops! 🤦 Couldn't get that. Let's try something different. 🤔");
                 }
-                break;
+              break;
 
               default:
                 if(speechData) {
@@ -310,7 +337,7 @@ app.controller('PostsCtrl', function($scope, $http) {
                 } else {
                   addTextToResults("Oops! 🤦 Couldn't get that. Let's try something different. 🤔");
                 }
-                break;
+              break;
             }
             hideSpinner();
             clearInput();
@@ -320,7 +347,7 @@ app.controller('PostsCtrl', function($scope, $http) {
             addTextToResults("Error occured. Plz Try Again!");
             clearInput();
           });
-          break;
+        break;
       }
     }
 

@@ -1,19 +1,18 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800);
-
+@import url('https://fonts.googleapis.com/css?family=Black+Ops+One|Roboto:100,300,400,500|Satisfy');
 a,
 a:hover,
 a:focus {
-  text-decoration: none;
+  text-decoration: none !important;
+  outline: none!important;
 }
 
 body {
   color: #fff;
   padding: 40px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .head {
-  font-family: 'Open Sans', sans-serif;
   text-align: center;
   font-weight: 300;
   text-shadow: none;
@@ -23,7 +22,6 @@ body {
   font-family: 'craft';
   src: url('../fonts/myfont/FFF_Tusj.ttf') format('truetype');
 }
-
 .craft {
   font-family: 'craft';
 }
@@ -38,9 +36,12 @@ body, h1,h2,h3, p{
   padding:0;
 }
 
+.terbot {
+  font-family: 'Black Ops One', cursive;
+}
+
 .gradientCont{
   background: #7d1aff;
-  /* background-image: linear-gradient(-270deg, #ff5e00 0%, #ff6060 100%); */
   width:100%;
   height: 200px;
 }
@@ -87,7 +88,7 @@ body, h1,h2,h3, p{
   display: inline-block;
 }
 
-#terminalReslutsCont{
+#terminalResultsCont{
   background: #000;
   width: 100%;
   height: 350px;
@@ -101,13 +102,12 @@ body, h1,h2,h3, p{
   color: rgba(255,255,255,0.9);
 }
 
-
-#terminalReslutsCont a{
+#terminalResultsCont a{
   color: rgba(255,255,255,0.9);
   text-decoration: none;
 }
 
-#terminalReslutsCont a:hover{
+#terminalResultsCont a:hover{
   text-decoration: underline;
 }
 
@@ -125,7 +125,6 @@ body, h1,h2,h3, p{
   font-family: 'Roboto Mono', monospace;
   position: absolute;
 }
-
 
 /* Make me responsive */
 @media screen and (max-width: 768px){
@@ -204,8 +203,8 @@ body, h1,h2,h3, p{
 
 .foo-txt {
   font-size: 15px;
-  font-weight: 300;
-  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-family: 'Satisfy', cursive;
   text-shadow: none;
   color: #272727;
 }
@@ -235,8 +234,6 @@ body, h1,h2,h3, p{
   opacity: 0;
   position: absolute;
   margin-right: auto;
-  //left: 0;
-  //right: 0;
   color: #fff;
   animation: loading-1 500ms ease-in infinite;
   -webkit-animation: loading-1 500ms ease-in infinite;
@@ -247,8 +244,6 @@ body, h1,h2,h3, p{
   opacity: 0;
   position: absolute;
   margin-right: auto;
-  //left: 0;
-  //right: 0;
   color: #fff;
   -webkit-animation: loading-2 500ms ease-in infinite;
   -moz-animation: loading-2 500ms ease-in infinite;
@@ -259,8 +254,6 @@ body, h1,h2,h3, p{
   opacity: 0;
   position: absolute;
   margin-right: auto;
-  //left: 0;
-  //right: 0;
   color: #fff;
   -webkit-animation: loading-3 500ms ease-in infinite;
   -moz-animation: loading-3 500ms ease-in infinite;
@@ -271,8 +264,6 @@ body, h1,h2,h3, p{
   opacity: 0;
   position: absolute;
   margin-right: auto;
-  //left: 0;
-  //right: 0;
   color: #fff;
   -webkit-animation: loading-4 500ms ease-in infinite;
   -moz-animation: loading-4 500ms ease-in infinite;
@@ -322,10 +313,16 @@ body, h1,h2,h3, p{
   padding: 10px;
 }
 
+.item_slider {
+  width: 550px;
+  margin-left: 20px;
+}
+
 .res_list_div {
   padding: 10px;
   border: solid 1px #dcdcdc;
   border-radius: 3px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .res_name {
@@ -333,6 +330,9 @@ body, h1,h2,h3, p{
   color: #f98e1d;
   margin-bottom: 5px;
   font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .res_bg {
@@ -343,11 +343,17 @@ body, h1,h2,h3, p{
 }
 
 .res_type {
-  color: #4a4a4a;
+  color: #ffffff;
   font-weight: 400;
   font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
+.slick-slide:focus {
+  outline: none !important;
+}
 /* Restaurant end */
 
 /* Keyframes */
