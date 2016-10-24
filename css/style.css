@@ -42,8 +42,12 @@ body, h1,h2,h3, p{
 
 .gradientCont{
   background: #7d1aff;
+  background: -webkit-linear-gradient(bottom,#fff 60%,#7d1aff 5%);
+  background: -moz-linear-gradient(bottom,#fff 60%,#7d1aff 5%);
+  background: -o-linear-gradient(bottom,#fff 60%,#7d1aff 5%);
+  background: linear-gradient(bottom,#fff 60%,#7d1aff 5%);
   width:100%;
-  height: 200px;
+  /* height: 200px; */
 }
 
 .mainCont{
@@ -77,7 +81,7 @@ body, h1,h2,h3, p{
   border-radius: 0px;
   padding: 12px 0 0 0;
   font-family: 'Roboto Mono', monospace;
-  height: 100%;
+  /* height: 100%; */
   border-radius: 0 0 4px 4px;
 }
 
@@ -128,9 +132,6 @@ body, h1,h2,h3, p{
 
 /* Make me responsive */
 @media screen and (max-width: 768px){
-  .gradientCont{
-    height: 220px;
-  }
   .mainCont{
     width: 90%;
     padding: 0 0;
