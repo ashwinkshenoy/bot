@@ -48,7 +48,7 @@ app.controller('PostsCtrl', function($scope, $http) {
       template += '</div><!--res_list_div-->';
       template += '</div>';
       $("."+slider_name).append(template);
-      console.log(slider_name);
+      // console.log(slider_name);
     }
     $("."+slider_name).slick({
       dots: false,
