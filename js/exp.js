@@ -1,376 +1,380 @@
 var app = angular.module('mainApp', []);
 
 app.config(['$httpProvider', function($httpProvider) {
-    $httpProvider.defaults.useXDomain = true;
-    delete $httpProvider.defaults.headers.common['X-Requested-With'];
-  }
+		$httpProvider.defaults.useXDomain = true;
+		delete $httpProvider.defaults.headers.common['X-Requested-With'];
+	}
 ]);
 
 app.controller('PostsCtrl', function($scope, $http) {
 
-  // Get the focus to the text input to enter a word right away.
-  document.getElementById('terminalTextInput').focus();
+	// Get the focus to the text input to enter a word right away.
+	document.getElementById('terminalTextInput').focus();
 
-  // Scroll to the bottom of the results div
-  var scrollToBottomOfResults = function(){
-    var terminalResultsDiv = document.getElementById('terminalResultsCont');
-    terminalResultsDiv.scrollTop = terminalResultsDiv.scrollHeight;
-  }
+	// Scroll to the bottom of the results div
+	var scrollToBottomOfResults = function(){
+		var terminalResultsDiv = document.getElementById('terminalResultsCont');
+		terminalResultsDiv.scrollTop = terminalResultsDiv.scrollHeight;
+	}
 
-  // Add Text to terminal
-  var addTextToResults = function(textToAdd){
-    document.getElementById('terminalResultsCont').innerHTML += "<p>" + textToAdd + "</p>";
-    scrollToBottomOfResults();
-  }
-  var addTextToUser = function(textToAdd){
-    document.getElementById('terminalResultsCont').innerHTML += "<p class='userEnteredText'>> " + textToAdd + "</p>";
-    scrollToBottomOfResults();
-  }
-  // Add Restaurants to terminal
-  var addSlider = function(results){
-    var list_length = results.data.zomato.length;
-    var results = results.data.zomato;
-    var terminalResultsDiv = document.getElementById('terminalResultsCont');
-    var dt = $.now();
-    var slider_name = 'foo_slider_'+ dt;
-    terminalResultsDiv.innerHTML += "<div class='item_slider "+ slider_name +"'></div>";
-    for(i=0;i<list_length;i++){
-      var template = '<div>';
-      template += '<div class="res_list_div">';
-      template += '<a href="'+results[i].url+'" target="_blank">';
-      template += '<div class="res_name">'+results[i].name+'</div>';
-      template += '<div class="res_bg" style="background: url('+results[i].thumb +');"></div>';
-      template += '<div class="res_type">'+results[i].cuisines+'</div>';
-      template += '<div class="res_star">';
-      template += '<span style="background: #'+results[i].rating_color+'">'+results[i].rating+' / 5</span>';
-      template += '</div>';
-      template += '</a>';
-      template += '</div><!--res_list_div-->';
-      template += '</div>';
-      $("."+slider_name).append(template);
-      // console.log(slider_name);
-    }
-    $("."+slider_name).slick({
-      dots: false,
-      infinite: true,
-      speed: 1000,
-      slidesToShow: 2,
-      slidesToScroll: 1,
-    });
-    terminalResultsDiv.scrollTop = terminalResultsDiv.scrollHeight;
-  }
+	// Add Text to terminal
+	var addTextToResults = function(textToAdd){
+		document.getElementById('terminalResultsCont').innerHTML += "<p>" + textToAdd + "</p>";
+		scrollToBottomOfResults();
+	}
+	var addTextToUser = function(textToAdd){
+		document.getElementById('terminalResultsCont').innerHTML += "<p class='userEnteredText'>> " + textToAdd + "</p>";
+		scrollToBottomOfResults();
+	}
+	// Add Restaurants to terminal
+	var addSlider = function(results){
+		var list_length = results.data.zomato.length;
+		var results = results.data.zomato;
+		var terminalResultsDiv = document.getElementById('terminalResultsCont');
+		var dt = $.now();
+		var slider_name = 'foo_slider_'+ dt;
+		terminalResultsDiv.innerHTML += "<div class='item_slider "+ slider_name +"'></div>";
+		for(i=0;i<list_length;i++){
+			var template = '<div>';
+			template += '<div class="res_list_div">';
+			template += '<a href="'+results[i].url+'" target="_blank">';
+			template += '<div class="res_name">'+results[i].name+'</div>';
+			template += '<div class="res_bg" style="background: url('+results[i].thumb +');"></div>';
+			template += '<div class="res_type">'+results[i].cuisines+'</div>';
+			template += '<div class="res_star">';
+			template += '<span style="background: #'+results[i].rating_color+'">'+results[i].rating+' / 5</span>';
+			template += '</div>';
+			template += '</a>';
+			template += '</div><!--res_list_div-->';
+			template += '</div>';
+			$("."+slider_name).append(template);
+			// console.log(slider_name);
+		}
+		$("."+slider_name).slick({
+			dots: false,
+			infinite: true,
+			speed: 1000,
+			slidesToShow: 2,
+			slidesToScroll: 1,
+		});
+		terminalResultsDiv.scrollTop = terminalResultsDiv.scrollHeight;
+	}
 
-  // Speech
-  function speak(text, callback) {
-    var u = new SpeechSynthesisUtterance();
-    u.text = text;
-    u.lang = 'en-us';
-    u.name = 'male';
-    u.onend = function () {
-      if (callback) {
-        callback();
-      }
-    };
-    u.onerror = function (e) {
-      if (callback) {
-        callback(e);
-      }
-    };
-    speechSynthesis.speak(u);
-    hideSpinner();
-  }
+	// Speech
+	function speak(text, callback) {
+		var u = new SpeechSynthesisUtterance();
+		u.text = text;
+		u.lang = 'en-us';
+		u.name = 'male';
+		u.onend = function () {
+			if (callback) {
+				callback();
+			}
+		};
+		u.onerror = function (e) {
+			if (callback) {
+				callback(e);
+			}
+		};
+		speechSynthesis.speak(u);
+		hideSpinner();
+	}
 
-  // Initial Text
-  addTextToResults("-------------------------------------<h1>Hi, I am <span class='terbot'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'Weather in New York' or 'Today's Quote'</p>-------------------------------------");
+	// Initial Text
+	addTextToResults("-------------------------------------<h1>Hi, I am <span class='terbot'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'Weather in New York' or 'Today's Quote'</p>-------------------------------------");
 
-  // Clear text input
-  var clearInput = function(){
-    document.getElementById('terminalTextInput').value = "";
-  }
+	// Clear text input
+	var clearInput = function(){
+		document.getElementById('terminalTextInput').value = "";
+	}
 
-  // Opening links in a new window
-  var openLinkInNewWindow = function(linkToOpen){
-    window.open(linkToOpen, '_blank');
-    clearInput();
-    hideSpinner();
-  }
+	// Opening links in a new window
+	var openLinkInNewWindow = function(linkToOpen){
+		window.open(linkToOpen, '_blank');
+		clearInput();
+		hideSpinner();
+	}
 
-  // Ascii Spinner
-  var showSpinner = function() {
-    $('.spinner').show();
-    $('#terminalTextInput').blur();
-  }
+	// Ascii Spinner
+	var showSpinner = function() {
+		$('.spinner').show();
+		$('#terminalTextInput').blur();
+	}
 
-  var hideSpinner = function() {
-    $('.spinner').hide();
-    $('#terminalTextInput').focus();
-  }
+	var hideSpinner = function() {
+		$('.spinner').hide();
+		$('#terminalTextInput').focus();
+	}
 
-  function sleep(delay) {
-    var start = new Date().getTime();
-    while (new Date().getTime() < start + delay);
-  }
+	function sleep(delay) {
+		var start = new Date().getTime();
+		while (new Date().getTime() < start + delay);
+	}
 
-  var session = function() {
-    // Retrieve the object from storage
-    if(sessionStorage.getItem('session')) {
-      var retrievedSession = sessionStorage.getItem('session');
-    } else {
-      // Random Number Generator
-      var randomNo = Math.floor((Math.random() * 1000) + 1);
-      // get Timestamp
-      var timestamp = Date.now();
-      // get Day
-      var date = new Date();
-      var weekday = new Array(7);
-      weekday[0] = "Sunday";
-      weekday[1] = "Monday";
-      weekday[2] = "Tuesday";
-      weekday[3] = "Wednesday";
-      weekday[4] = "Thursday";
-      weekday[5] = "Friday";
-      weekday[6] = "Saturday";
-      var day = weekday[date.getDay()];
-      // Join random number+day+timestamp
-      var session_id = randomNo+day+timestamp;
-      // Put the object into storage
-      sessionStorage.setItem('session', session_id);
-      var retrievedSession = sessionStorage.getItem('session');
-    }
-    return retrievedSession;
-    // console.log('session: ', retrievedSession);
-  }
+	var session = function() {
+		// Retrieve the object from storage
+		if(sessionStorage.getItem('session')) {
+			var retrievedSession = sessionStorage.getItem('session');
+		} else {
+			// Random Number Generator
+			var randomNo = Math.floor((Math.random() * 1000) + 1);
+			// get Timestamp
+			var timestamp = Date.now();
+			// get Day
+			var date = new Date();
+			var weekday = new Array(7);
+			weekday[0] = "Sunday";
+			weekday[1] = "Monday";
+			weekday[2] = "Tuesday";
+			weekday[3] = "Wednesday";
+			weekday[4] = "Thursday";
+			weekday[5] = "Friday";
+			weekday[6] = "Saturday";
+			var day = weekday[date.getDay()];
+			// Join random number+day+timestamp
+			var session_id = randomNo+day+timestamp;
+			// Put the object into storage
+			sessionStorage.setItem('session', session_id);
+			var retrievedSession = sessionStorage.getItem('session');
+		}
+		return retrievedSession;
+		// console.log('session: ', retrievedSession);
+	}
 
-  // save and retrieve data from storage
-  // var savedinput = function(formVal) {
-  //   var getinput = JSON.parse(localStorage.getItem('saveinput'));
-  //   if(getinput == null) {
-  //     var inputval = [];
-  //     inputval[0] = formVal;
-  //     localStorage.setItem("saveinput", JSON.stringify(inputval));
-  //   } else {
-  //     getinput[(getinput.length)] = formVal;
-  //     localStorage.setItem("saveinput", JSON.stringify(getinput));
-  //     // console.log(getinput.length);
-  //   }
-  // }
+	// save and retrieve data from storage
+	// var savedinput = function(formVal) {
+	//   var getinput = JSON.parse(localStorage.getItem('saveinput'));
+	//   if(getinput == null) {
+	//     var inputval = [];
+	//     inputval[0] = formVal;
+	//     localStorage.setItem("saveinput", JSON.stringify(inputval));
+	//   } else {
+	//     getinput[(getinput.length)] = formVal;
+	//     localStorage.setItem("saveinput", JSON.stringify(getinput));
+	//     // console.log(getinput.length);
+	//   }
+	// }
 
-  // angular.element(document).ready(function () {
-  //   if (localStorage.getItem('saveinput')){
-  //     var historyIndex = JSON.parse(localStorage.getItem('saveinput')).length;
-  //     var historyCount = JSON.parse(localStorage.getItem('saveinput')).length;
-  //     var historyinput = JSON.parse(localStorage.getItem('saveinput'));
-  //     console.log(historyIndex);
-  //   }
-  // });
+	// angular.element(document).ready(function () {
+	//   if (localStorage.getItem('saveinput')){
+	//     var historyIndex = JSON.parse(localStorage.getItem('saveinput')).length;
+	//     var historyCount = JSON.parse(localStorage.getItem('saveinput')).length;
+	//     var historyinput = JSON.parse(localStorage.getItem('saveinput'));
+	//     console.log(historyIndex);
+	//   }
+	// });
 
-  // if (localStorage.getItem('saveinput')){
-  //   var historyIndex = JSON.parse(localStorage.getItem('saveinput')).length;
-  //   var historyCount = JSON.parse(localStorage.getItem('saveinput')).length;
-  //   var historyinput = JSON.parse(localStorage.getItem('saveinput'));
-  //   // console.log(historyIndex);
-  // }
+	// if (localStorage.getItem('saveinput')){
+	//   var historyIndex = JSON.parse(localStorage.getItem('saveinput')).length;
+	//   var historyCount = JSON.parse(localStorage.getItem('saveinput')).length;
+	//   var historyinput = JSON.parse(localStorage.getItem('saveinput'));
+	//   // console.log(historyIndex);
+	// }
 
-  // document.onkeydown = function(e) {
-  // // $scope.key = function($event){
-  //   if (localStorage.getItem('saveinput')){
-  //     switch (e.keyCode) {
-  //       case 38:
-  //         // UP KEY
-  //         historyIndex--;
-  //         if (historyIndex < 0){
-  //           historyIndex++;
-  //         }
-  //         clearInput();
-  //         $("#terminalTextInput").val(historyinput[historyIndex]);
-  //         break;
-  //       case 40:
-  //         // DOWN KEY
-  //         historyIndex++;
-  //         if (historyIndex > historyCount-1) {
-  //           historyIndex--;
-  //         }
-  //         clearInput();
-  //         $("#terminalTextInput").val(historyinput[historyIndex]);
-  //         break;
-  //     }
-  //   } else {
-  //     console.log("no old cmds");
-  //   }
-  // };
-  // save and retrieve data from storage - end
+	// document.onkeydown = function(e) {
+	// // $scope.key = function($event){
+	//   if (localStorage.getItem('saveinput')){
+	//     switch (e.keyCode) {
+	//       case 38:
+	//         // UP KEY
+	//         historyIndex--;
+	//         if (historyIndex < 0){
+	//           historyIndex++;
+	//         }
+	//         clearInput();
+	//         $("#terminalTextInput").val(historyinput[historyIndex]);
+	//         break;
+	//       case 40:
+	//         // DOWN KEY
+	//         historyIndex++;
+	//         if (historyIndex > historyCount-1) {
+	//           historyIndex--;
+	//         }
+	//         clearInput();
+	//         $("#terminalTextInput").val(historyinput[historyIndex]);
+	//         break;
+	//     }
+	//   } else {
+	//     console.log("no old cmds");
+	//   }
+	// };
+	// save and retrieve data from storage - end
 
 
-  var formData = {
-    ques: "null",
-  };
+	var formData = {
+		ques: "null",
+	};
 
-  $scope.submitForm = function() {
-    formData = $scope.form;
-    $scope.path = "img/plain.jpg";
-    $scope.res = "";
+	$scope.submitForm = function() {
+		formData = $scope.form;
+		$scope.path = "img/plain.jpg";
+		$scope.res = "";
 
-    // Having a specific text reply to specific strings
-    var textReplies = function() {
+		// Having a specific text reply to specific strings
+		var textReplies = function() {
 
-      // Create/call sessionid
-      var mysession = session();
+			// Create/call sessionid
+			var mysession = session();
 
-      // Save input to local storage
-      // savedinput(formData.ques);
+			// Save input to local storage
+			// savedinput(formData.ques);
 
-      switch(textInputValueLowerCase){
+			switch(textInputValueLowerCase){
 
-        case "youtube":
-          clearInput();
-          addTextToResults("Type youtube + something to search for.");
-          hideSpinner();
-        break;
+				case "youtube":
+					clearInput();
+					addTextToResults("Type youtube + something to search for.");
+					hideSpinner();
+				break;
 
-        case "google":
-          clearInput();
-          addTextToResults("Type google + something to search for.");
-          hideSpinner();
-        break;
+				case "google":
+					clearInput();
+					addTextToResults("Type google + something to search for.");
+					hideSpinner();
+				break;
 
-        default:
-          clearInput();
-          var url = 'bot.php';
-          $http({
-            method: 'POST',
-            url: url,
-            data: {
-              'query': formData.ques,
-              'sessionId': mysession
-            },
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-          }).
-          success(function(data, status, headers, config) {
-            $scope.posts = data;
-            console.log($scope.posts);
-            var speechData = $scope.posts.result.fulfillment.speech;
-            var action = $scope.posts.result.action;
-            var params = $scope.posts.result.parameters;
-            switch(action) {
-              case "action.speak":
-                addTextToResults(speechData);
-                speak(params.speech);
-              break;
+				default:
+					clearInput();
+					// Use your api.ai url else u'll train my bot
+					// check out bot.php file
+					var url = 'https://chat-bot-1.herokuapp.com/mybot';
+					$http({
+						method: 'POST',
+						url: url,
+						data: {
+							'query': formData.ques,
+							'sessionId': mysession
+						},
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					}).
+					success(function(data, status, headers, config) {
+						$scope.posts = data;
+						// console.log($scope.posts);
+						var speechData = $scope.posts.speech;
+						var action = $scope.posts.action;
+						var params = $scope.posts.parameters;
+						switch(action) {
+							case "action.speak":
+								addTextToResults(speechData);
+								speak(params.speech);
+							break;
 
-              case "action.clean":
-                addTextToResults(speechData);
-                document.getElementById('terminalReslutsCont').innerHTML ="";
-              break;
+							case "action.clean":
+								addTextToResults(speechData);
+								document.getElementById('terminalReslutsCont').innerHTML ="";
+							break;
 
-              case "action.search":
-                addTextToResults(speechData);
-                openLinkInNewWindow('https://www.google.com/search?q=' + params.search);
-              break;
+							case "action.search":
+								addTextToResults(speechData);
+								openLinkInNewWindow('https://www.google.com/search?q=' + params.search);
+							break;
 
-              case "action.browse":
-                addTextToResults(speechData);
-                openLinkInNewWindow('http://www.'+params.domain);
-              break;
+							case "action.browse":
+								addTextToResults(speechData);
+								openLinkInNewWindow('http://www.'+params.domain);
+							break;
 
-              case "action.update":
-                document.getElementById('terminalReslutsCont').innerHTML ="Updating TerBot...<br>";
-                setTimeout( function() {
-                  addTextToResults("System is Fetching data head!");
-                }, 1000 );
-                setTimeout( function() {
-                  addTextToResults("System is Up-to date!");
-                }, 3000 );
-              break;
+							case "action.update":
+								document.getElementById('terminalReslutsCont').innerHTML ="Updating TerBot...<br>";
+								setTimeout( function() {
+									addTextToResults("System is Fetching data head!");
+								}, 1000 );
+								setTimeout( function() {
+									addTextToResults("System is Up-to date!");
+								}, 3000 );
+							break;
 
-              case "action.reboot":
-                $('.angry.reload').show();
-                setTimeout( function() {
-                  $('.angry.reload').fadeOut(1000);
-                }, 3000);
-                document.getElementById('terminalReslutsCont').innerHTML ="Rebooting TerBot...<br>";
-                setTimeout( function() {
-                  addTextToResults("System is going down!");
-                }, 1000 );
-                setTimeout( function() {
-                  addTextToResults("-------------------------------------<h1>Hi, I am <span class='craft'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'News' or 'Weather in Bangalore'</p>-------------------------------------");
-                }, 3000 );
-              break;
+							case "action.reboot":
+								$('.angry.reload').show();
+								setTimeout( function() {
+									$('.angry.reload').fadeOut(1000);
+								}, 3000);
+								document.getElementById('terminalReslutsCont').innerHTML ="Rebooting TerBot...<br>";
+								setTimeout( function() {
+									addTextToResults("System is going down!");
+								}, 1000 );
+								setTimeout( function() {
+									addTextToResults("-------------------------------------<h1>Hi, I am <span class='craft'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'News' or 'Weather in Bangalore'</p>-------------------------------------");
+								}, 3000 );
+							break;
 
-              case "action.slang":
-                addTextToResults(speechData);
-                $('.angry.slang').show();
-                setTimeout( function() {
-                  $('.angry.slang').fadeOut(1000);
-                }, 3000);
-              break;
+							case "action.slang":
+								addTextToResults(speechData);
+								$('.angry.slang').show();
+								setTimeout( function() {
+									$('.angry.slang').fadeOut(1000);
+								}, 3000);
+							break;
 
-              case "action.restaurant":
-                addTextToResults(speechData);
-                addSlider($scope.posts.result.fulfillment);
-                hideSpinner();
-              break;
+							case "action.restaurant":
+								addTextToResults(speechData);
+								addSlider($scope.posts.result.fulfillment);
+								hideSpinner();
+							break;
 
-              case "action.person":
-                addTextToResults(speechData);
-                if(speechData != "") {
-                  var img_path = $scope.posts.result.fulfillment.data.image;
-                  $('.s_p_img').fadeIn();
-                  if(img_path != "") {
-                    $scope.path = img_path;
-                    setTimeout( function() {
-                      $('.s_p_img').fadeOut(3000);
-                    }, 5000);
-                  }
-                } else {
-                  addTextToResults("Oops! 🤦 Couldn't get that. Let's try something different. 🤔");
-                }
-              break;
+							case "action.person":
+								addTextToResults(speechData);
+								if(speechData != "") {
+									var img_path = $scope.posts.result.fulfillment.data.image;
+									$('.s_p_img').fadeIn();
+									if(img_path != "") {
+										$scope.path = img_path;
+										setTimeout( function() {
+											$('.s_p_img').fadeOut(3000);
+										}, 5000);
+									}
+								} else {
+									addTextToResults("Oops! 🤦 Couldn't get that. Let's try something different. 🤔");
+								}
+							break;
 
-              default:
-                if(speechData) {
-                  addTextToResults(speechData);
-                } else {
-                  addTextToResults("Oops! 🤦 Couldn't get that. Let's try something different. 🤔");
-                }
-              break;
-            }
-            hideSpinner();
-            clearInput();
-          }).
-          error(function(data, status, headers, config) {
-            hideSpinner();
-            addTextToResults("Error occured. Plz Try Again!");
-            clearInput();
-          });
-        break;
-      }
-    }
+							default:
+								if(speechData) {
+									addTextToResults(speechData);
+								} else {
+									addTextToResults("Oops! 🤦 Couldn't get that. Let's try something different. 🤔");
+								}
+							break;
+						}
+						hideSpinner();
+						clearInput();
+					}).
+					error(function(data, status, headers, config) {
+						hideSpinner();
+						addTextToResults("Error occured. Plz Try Again!");
+						clearInput();
+					});
+				break;
+			}
+		}
 
-    // Main function to check the entered text and assign it to the correct function
-    var checkWord = function() {
-      textInputValue = formData.ques.trim(); //get the text from the text input to a variable
-      textInputValueLowerCase = textInputValue.toLowerCase(); //get the lower case of the string
-      showSpinner();
+		// Main function to check the entered text and assign it to the correct function
+		var checkWord = function() {
+			textInputValue = formData.ques.trim(); //get the text from the text input to a variable
+			textInputValueLowerCase = textInputValue.toLowerCase(); //get the lower case of the string
+			showSpinner();
 
-      //event.preventDefault();
-      if (textInputValue != ""){ //checking if text was entered
-        addTextToUser(textInputValue);
-        if (textInputValueLowerCase.substr(0,8) == "youtube ") {
-          addTextToResults("<i>I've searched on YouTube for " + "<b>" + textInputValue.substr(8) + "</b>" + " it should be opened now.</i>");
-          openLinkInNewWindow('https://www.youtube.com/results?search_query=' + textInputValueLowerCase.substr(8));
-        } else if (textInputValueLowerCase.substr(0,5) == "wiki "){
-          addTextToResults("<i>I've searched on Wikipedia for " + "<b>" + textInputValue.substr(5) + "</b>" + " it should be opened now.</i>");
-          openLinkInNewWindow('https://wikipedia.org/w/index.php?search=' + textInputValueLowerCase.substr(5));
-        } else{
-          textReplies();
-        }
-      } else {
-        addTextToResults("Yo! Type something :)");
-        hideSpinner();
-      }
-    };
-    checkWord();
-  };
+			//event.preventDefault();
+			if (textInputValue != ""){ //checking if text was entered
+				addTextToUser(textInputValue);
+				if (textInputValueLowerCase.substr(0,8) == "youtube ") {
+					addTextToResults("<i>I've searched on YouTube for " + "<b>" + textInputValue.substr(8) + "</b>" + " it should be opened now.</i>");
+					openLinkInNewWindow('https://www.youtube.com/results?search_query=' + textInputValueLowerCase.substr(8));
+				} else if (textInputValueLowerCase.substr(0,5) == "wiki "){
+					addTextToResults("<i>I've searched on Wikipedia for " + "<b>" + textInputValue.substr(5) + "</b>" + " it should be opened now.</i>");
+					openLinkInNewWindow('https://wikipedia.org/w/index.php?search=' + textInputValueLowerCase.substr(5));
+				} else{
+					textReplies();
+				}
+			} else {
+				addTextToResults("Yo! Type something :)");
+				hideSpinner();
+			}
+		};
+		checkWord();
+	};
 
 });
 
