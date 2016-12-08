@@ -235,24 +235,19 @@ app.controller('PostsCtrl', function($scope, $http) {
 
         default:
           clearInput();
-          var url = 'https://api.api.ai/v1/query?v=20150910&query='+formData.ques+'&lang=en-us&sessionId='+mysession;
+          var url = 'bot.php';
           $http({
-            method: 'GET',
+            method: 'POST',
             url: url,
-            // data: {
-            //   'query': formData.ques,
-            //   'lang' : 'EN',
-            //   'sessionId':mysession,
-            // },
-            headers: {
-              // PLZ: Use your authorization key, else you will train my bot, not yours!
-              'Authorization': 'Bearer 553ab6017e584e0fa351952c8c9ca956',
-              'Content-Type': 'application/json'
-            }
+            data: {
+              'query': formData.ques,
+              'sessionId': mysession
+            },
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
           }).
           success(function(data, status, headers, config) {
             $scope.posts = data;
-            // console.log($scope.posts.result.parameters.speech);
+            console.log($scope.posts);
             var speechData = $scope.posts.result.fulfillment.speech;
             var action = $scope.posts.result.action;
             var params = $scope.posts.result.parameters;
