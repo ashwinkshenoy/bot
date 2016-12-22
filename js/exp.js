@@ -141,6 +141,38 @@ app.controller('PostsCtrl', function($scope, $http) {
 		// console.log('session: ', retrievedSession);
 	}
 
+	 	// Simple Hi Get (Initialization of Bot Server)
+	var mysession = session();
+	showSpinner();
+	$http({
+	  method: 'POST',
+	  url: 'http://chat-bot-1.herokuapp.com/mybot',
+	  data: {
+	    'query': 'Hi',
+	    'sessionId': mysession
+	  },
+	  headers: {
+	    'Content-Type': 'application/json'
+	  }
+	}).then(function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    $scope.posts = response;
+	    // console.log($scope.posts);
+	    var speechData = $scope.posts.data.speech;
+	    addTextToResults(speechData);
+	    // console.log("Yipee! Bot activated :) ");
+	    hideSpinner();
+	}, function errorCallback(response) {
+	  // called asynchronously if an error occurs
+	  // or server returns response with an error status.
+	  addTextToResults(" Error Connecting to bot server 😴 ");
+	  addTextToResults(" We have informed the 💀 web-master 😈.");
+	  console.log("Error Connecting to bot server :( ");
+	  console.log("Get in touch at ashwinkshenoy@gmail.com.com ");
+	  hideSpinner();
+	});
+
 	// save and retrieve data from storage
 	// var savedinput = function(formVal) {
 	//   var getinput = JSON.parse(localStorage.getItem('saveinput'));
