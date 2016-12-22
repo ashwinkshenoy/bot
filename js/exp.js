@@ -342,14 +342,15 @@ app.controller('PostsCtrl', function($scope, $http) {
 
 							case "action.restaurant":
 								addTextToResults(speechData);
-								addSlider($scope.posts.result.fulfillment);
+								addSlider($scope.posts);
+								// console.log($scope.posts.data.zomato)
 								hideSpinner();
 							break;
 
 							case "action.person":
 								addTextToResults(speechData);
 								if(speechData != "") {
-									var img_path = $scope.posts.result.fulfillment.data.image;
+									var img_path = $scope.posts.data.image;
 									$('.s_p_img').fadeIn();
 									if(img_path != "") {
 										$scope.path = img_path;
