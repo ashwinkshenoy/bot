@@ -146,54 +146,59 @@ app.controller('PostsCtrl', function($scope, $http) {
 	}
 
 	// Suggestions
-  var addTextToOption = function(textToAdd){
-  	document.getElementById('suggestion').innerHTML = "";
-  	for(i=0;i<textToAdd.length;i++) {
-    	document.getElementById('suggestion').innerHTML += "<span ng-click='submitForm()'>" + textToAdd[i] + "</span>";
-  	}
-    scrollToBottomOfResults();
-  }
+	var addTextToOption = function(textToAdd){
+		document.getElementById('suggestion').innerHTML = "";
+		for(i=0;i<textToAdd.length;i++) {
+			document.getElementById('suggestion').innerHTML += "<span ng-click='submitForm()'>" + textToAdd[i] + "</span>";
+		}
+		scrollToBottomOfResults();
+	}
 
-  $(document).on("click", "#suggestion span", function() {
-    formData.ques = this.innerText;
-    $scope.submitForm(formData);
-    document.getElementById('suggestion').innerHTML = "";
-  });
+	$(document).on("click", "#suggestion span", function() {
+		formData.ques = this.innerText;
+		clearInput();
+		$scope.submitForm(formData);
+		document.getElementById('suggestion').innerHTML = "";
+	});
 
 
- 	// Simple Hi Get (Initialization of Bot Server)
+	// Simple Hi Get (Initialization of Bot Server)
 	var mysession = session();
 	showSpinner();
 	$http({
-	  method: 'POST',
-	  url: 'http://chat-bot-1.herokuapp.com/mybot',
-	  data: {
-	    'query': 'Hi',
-	    'sessionId': mysession
-	  },
-	  headers: {
-	    'Content-Type': 'application/json'
-	  }
+		method: 'POST',
+		url: 'http://chat-bot-1.herokuapp.com/mybot',
+		data: {
+			'query': 'Hi',
+			'sessionId': mysession
+		},
+		headers: {
+			'Content-Type': 'application/json'
+		}
 	}).then(function successCallback(response) {
-	    // this callback will be called asynchronously
-	    // when the response is available
-	    $scope.posts = response;
-	    // console.log($scope.posts.data.output.messages);
-	    var speechData = $scope.posts.data.output.speech;
-	    addTextToResults(speechData);
-	    if ($scope.posts.data.output.messages[1]) {
+			// this callback will be called asynchronously
+			// when the response is available
+			$scope.posts = response;
+			console.log($scope.posts);
+			var speechData = $scope.posts.data.output.speech;
+			addTextToResults(speechData);
+			var suggLength = $scope.posts.data.output.messages.length;
+			console.log(suggLength);
+			if(suggLength == 2) {
 				addTextToOption($scope.posts.data.output.messages[1].replies);
+			} else {
+				// console.log('No suggestions - '+ suggLength);
 			}
-	    // console.log("Yipee! Bot activated :) ");
-	    hideSpinner();
+			// console.log("Yipee! Bot activated :) ");
+			hideSpinner();
 	}, function errorCallback(response) {
-	  // called asynchronously if an error occurs
-	  // or server returns response with an error status.
-	  addTextToResults(" Error Connecting to bot server 😴 ");
-	  addTextToResults(" We have informed the 💀 web-master 😈.");
-	  console.log("Error Connecting to bot server :( ");
-	  console.log("Get in touch at ashwinkshenoy@gmail.com.com ");
-	  hideSpinner();
+		// called asynchronously if an error occurs
+		// or server returns response with an error status.
+		addTextToResults(" Error Connecting to bot server 😴 ");
+		addTextToResults(" We have informed the 💀 web-master 😈.");
+		console.log("Error Connecting to bot server :( ");
+		console.log("Get in touch at ashwinkshenoy@gmail.com.com ");
+		hideSpinner();
 	});
 
 	// save and retrieve data from storage
@@ -305,12 +310,15 @@ app.controller('PostsCtrl', function($scope, $http) {
 					}).
 					success(function(data, status, headers, config) {
 						$scope.posts = data;
-						console.log($scope.posts);
+						// console.log($scope.posts);
 						var speechData = $scope.posts.output.speech;
 						var action = $scope.posts.action;
 						var params = $scope.posts.parameters;
-						if ($scope.posts.output.messages == "") {
+						var suggLength = $scope.posts.output.messages.length;
+						if(suggLength == 2) {
 							addTextToOption($scope.posts.output.messages[1].replies);
+						} else {
+							// console.log('No suggestions - '+ suggLength);
 						}
 						// console.log($scope.posts.output.messages[1].replies);
 						switch(action) {
