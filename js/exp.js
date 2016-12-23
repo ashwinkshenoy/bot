@@ -179,11 +179,11 @@ app.controller('PostsCtrl', function($scope, $http) {
 			// this callback will be called asynchronously
 			// when the response is available
 			$scope.posts = response;
-			console.log($scope.posts);
+			// console.log($scope.posts);
 			var speechData = $scope.posts.data.output.speech;
 			addTextToResults(speechData);
 			var suggLength = $scope.posts.data.output.messages.length;
-			console.log(suggLength);
+			// console.log(suggLength);
 			if(suggLength == 2) {
 				addTextToOption($scope.posts.data.output.messages[1].replies);
 			} else {
