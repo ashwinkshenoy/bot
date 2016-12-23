@@ -29,7 +29,7 @@
       <div class="mainCont">
         <div class="terminalCont">
           <div id="terminalResultsCont"></div>
-          <form ng-submit="submitForm()">
+          <form ng-submit="submitForm(form)">
             <p class='spinner'>
               <span class='ascii-spinner-1'>|</span>
               <span class='ascii-spinner-2'>/</span>
@@ -38,6 +38,7 @@
             </p>
             <input type="text" id="terminalTextInput" autocomplete="off" placeholder="Say Hi!" ng-model="form.ques" class="spacer"/>
             <!-- <input type="submit" ngClick="Submit"> -->
+            <div id="suggestion"></div>
           </form>
         </div><!--terminalCont end-->
       </div><!--mainCont end-->

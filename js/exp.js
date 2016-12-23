@@ -8,6 +8,10 @@ app.config(['$httpProvider', function($httpProvider) {
 
 app.controller('PostsCtrl', function($scope, $http) {
 
+	var formData = {
+		ques: "null",
+	};
+
 	// Get the focus to the text input to enter a word right away.
 	document.getElementById('terminalTextInput').focus();
 
@@ -141,7 +145,23 @@ app.controller('PostsCtrl', function($scope, $http) {
 		// console.log('session: ', retrievedSession);
 	}
 
-	 	// Simple Hi Get (Initialization of Bot Server)
+	// Suggestions
+  var addTextToOption = function(textToAdd){
+  	document.getElementById('suggestion').innerHTML = "";
+  	for(i=0;i<textToAdd.length;i++) {
+    	document.getElementById('suggestion').innerHTML += "<span ng-click='submitForm()'>" + textToAdd[i] + "</span>";
+  	}
+    scrollToBottomOfResults();
+  }
+
+  $(document).on("click", "#suggestion span", function() {
+    formData.ques = this.innerText;
+    $scope.submitForm(formData);
+    document.getElementById('suggestion').innerHTML = "";
+  });
+
+
+ 	// Simple Hi Get (Initialization of Bot Server)
 	var mysession = session();
 	showSpinner();
 	$http({
@@ -158,9 +178,12 @@ app.controller('PostsCtrl', function($scope, $http) {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    $scope.posts = response;
-	    // console.log($scope.posts);
-	    var speechData = $scope.posts.data.speech;
+	    // console.log($scope.posts.data.output.messages);
+	    var speechData = $scope.posts.data.output.speech;
 	    addTextToResults(speechData);
+	    if ($scope.posts.data.output.messages[1]) {
+				addTextToOption($scope.posts.data.output.messages[1].replies);
+			}
 	    // console.log("Yipee! Bot activated :) ");
 	    hideSpinner();
 	}, function errorCallback(response) {
@@ -233,12 +256,10 @@ app.controller('PostsCtrl', function($scope, $http) {
 	// save and retrieve data from storage - end
 
 
-	var formData = {
-		ques: "null",
-	};
 
-	$scope.submitForm = function() {
-		formData = $scope.form;
+	$scope.submitForm = function(ques) {
+		$('#suggestion').html('');
+		formData = ques;
 		$scope.path = "img/plain.jpg";
 		$scope.res = "";
 
@@ -250,6 +271,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 
 			// Save input to local storage
 			// savedinput(formData.ques);
+			// console.log(formData.ques);
 
 			switch(textInputValueLowerCase){
 
@@ -283,10 +305,14 @@ app.controller('PostsCtrl', function($scope, $http) {
 					}).
 					success(function(data, status, headers, config) {
 						$scope.posts = data;
-						// console.log($scope.posts);
-						var speechData = $scope.posts.speech;
+						console.log($scope.posts);
+						var speechData = $scope.posts.output.speech;
 						var action = $scope.posts.action;
 						var params = $scope.posts.parameters;
+						if ($scope.posts.output.messages == "") {
+							addTextToOption($scope.posts.output.messages[1].replies);
+						}
+						// console.log($scope.posts.output.messages[1].replies);
 						switch(action) {
 							case "action.speak":
 								addTextToResults(speechData);
@@ -295,7 +321,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 
 							case "action.clean":
 								addTextToResults(speechData);
-								document.getElementById('terminalReslutsCont').innerHTML ="";
+								document.getElementById('terminalResultsCont').innerHTML = "";
 							break;
 
 							case "action.search":
@@ -309,7 +335,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 							break;
 
 							case "action.update":
-								document.getElementById('terminalReslutsCont').innerHTML ="Updating TerBot...<br>";
+								document.getElementById('terminalResultsCont').innerHTML ="Updating TerBot...<br>";
 								setTimeout( function() {
 									addTextToResults("System is Fetching data head!");
 								}, 1000 );
@@ -319,16 +345,22 @@ app.controller('PostsCtrl', function($scope, $http) {
 							break;
 
 							case "action.reboot":
+								showSpinner();
 								$('.angry.reload').show();
 								setTimeout( function() {
 									$('.angry.reload').fadeOut(1000);
 								}, 3000);
-								document.getElementById('terminalReslutsCont').innerHTML ="Rebooting TerBot...<br>";
+								document.getElementById('terminalResultsCont').innerHTML = "";
 								setTimeout( function() {
+									showSpinner();
+									addTextToResults("Rebooting TerBot...");
 									addTextToResults("System is going down!");
 								}, 1000 );
 								setTimeout( function() {
+									showSpinner();
+									document.getElementById('terminalResultsCont').innerHTML = "";
 									addTextToResults("-------------------------------------<h1>Hi, I am <span class='craft'>TerBot</span></h1>-------------------------------------<p>Let's Get Started!</p><p>Try typing 'Hi' or 'News' or 'Weather in Bangalore'</p>-------------------------------------");
+									hideSpinner();
 								}, 3000 );
 							break;
 
