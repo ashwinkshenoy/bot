@@ -184,10 +184,12 @@ app.controller('PostsCtrl', function($scope, $http) {
 			addTextToResults(speechData);
 			var suggLength = $scope.posts.data.output.messages.length;
 			// console.log(suggLength);
-			if(suggLength == 2) {
-				addTextToOption($scope.posts.data.output.messages[1].replies);
-			} else {
-				// console.log('No suggestions - '+ suggLength);
+			if($scope.posts.data.output.messages){
+				if(suggLength == 2) {
+					addTextToOption($scope.posts.data.output.messages[1].replies);
+				} else {
+					// console.log('No suggestions - '+ suggLength);
+				}
 			}
 			// console.log("Yipee! Bot activated :) ");
 			hideSpinner();
@@ -314,13 +316,6 @@ app.controller('PostsCtrl', function($scope, $http) {
 						var speechData = $scope.posts.output.speech;
 						var action = $scope.posts.action;
 						var params = $scope.posts.parameters;
-						var suggLength = $scope.posts.output.messages.length;
-						if(suggLength == 2) {
-							addTextToOption($scope.posts.output.messages[1].replies);
-						} else {
-							// console.log('No suggestions - '+ suggLength);
-						}
-						// console.log($scope.posts.output.messages[1].replies);
 						switch(action) {
 							case "action.speak":
 								addTextToResults(speechData);
@@ -330,6 +325,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 							case "action.clean":
 								addTextToResults(speechData);
 								document.getElementById('terminalResultsCont').innerHTML = "";
+								addTextToResults("Cleared!");
 							break;
 
 							case "action.search":
@@ -411,6 +407,16 @@ app.controller('PostsCtrl', function($scope, $http) {
 								}
 							break;
 						}
+						// Suggestions Check if available in API
+						if($scope.posts.output.messages){
+							var suggLength = $scope.posts.output.messages.length;
+							if(suggLength == 2) {
+								addTextToOption($scope.posts.output.messages[1].replies);
+							} else {
+								// console.log('No suggestions - '+ suggLength);
+							}
+						}
+						// console.log($scope.posts.output.messages[1].replies);
 						hideSpinner();
 						clearInput();
 					}).
