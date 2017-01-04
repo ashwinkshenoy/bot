@@ -167,7 +167,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 	showSpinner();
 	$http({
 		method: 'POST',
-		url: 'http://chat-bot-1.herokuapp.com/mybot',
+		url: 'http://bot.foofys.com/mybot',
 		data: {
 			'query': 'Hi',
 			'sessionId': mysession
@@ -181,6 +181,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 			$scope.posts = response;
 			// console.log($scope.posts);
 			var speechData = $scope.posts.data.output.speech;
+			speechData = speechData.replace(new RegExp('\r?\n','g'), '<br />');
 			addTextToResults(speechData);
 			var suggLength = $scope.posts.data.output.messages.length;
 			// console.log(suggLength);
@@ -205,60 +206,55 @@ app.controller('PostsCtrl', function($scope, $http) {
 
 	// save and retrieve data from storage
 	// var savedinput = function(formVal) {
-	//   var getinput = JSON.parse(localStorage.getItem('saveinput'));
-	//   if(getinput == null) {
-	//     var inputval = [];
-	//     inputval[0] = formVal;
-	//     localStorage.setItem("saveinput", JSON.stringify(inputval));
-	//   } else {
-	//     getinput[(getinput.length)] = formVal;
-	//     localStorage.setItem("saveinput", JSON.stringify(getinput));
-	//     // console.log(getinput.length);
-	//   }
+	// 	var getinput = JSON.parse(localStorage.getItem('saveinput'));
+	// 	if(getinput == null) {
+	// 		var inputval = [];
+	// 		inputval[0] = formVal;
+	// 		localStorage.setItem("saveinput", JSON.stringify(inputval));
+	// 	} else {
+	// 		getinput[(getinput.length)] = formVal;
+	// 		localStorage.setItem("saveinput", JSON.stringify(getinput));
+	// 		// console.log(getinput.length);
+	// 	}
 	// }
 
-	// angular.element(document).ready(function () {
-	//   if (localStorage.getItem('saveinput')){
-	//     var historyIndex = JSON.parse(localStorage.getItem('saveinput')).length;
-	//     var historyCount = JSON.parse(localStorage.getItem('saveinput')).length;
-	//     var historyinput = JSON.parse(localStorage.getItem('saveinput'));
-	//     console.log(historyIndex);
-	//   }
-	// });
-
 	// if (localStorage.getItem('saveinput')){
-	//   var historyIndex = JSON.parse(localStorage.getItem('saveinput')).length;
-	//   var historyCount = JSON.parse(localStorage.getItem('saveinput')).length;
-	//   var historyinput = JSON.parse(localStorage.getItem('saveinput'));
-	//   // console.log(historyIndex);
+	// 	var historyIndex = JSON.parse(localStorage.getItem('saveinput')).length;
+	// 	var historyCount = JSON.parse(localStorage.getItem('saveinput')).length;
+	// 	var historyinput = JSON.parse(localStorage.getItem('saveinput'));
+	// 	console.log(historyIndex);
 	// }
 
 	// document.onkeydown = function(e) {
 	// // $scope.key = function($event){
-	//   if (localStorage.getItem('saveinput')){
-	//     switch (e.keyCode) {
-	//       case 38:
-	//         // UP KEY
-	//         historyIndex--;
-	//         if (historyIndex < 0){
-	//           historyIndex++;
-	//         }
-	//         clearInput();
-	//         $("#terminalTextInput").val(historyinput[historyIndex]);
-	//         break;
-	//       case 40:
-	//         // DOWN KEY
-	//         historyIndex++;
-	//         if (historyIndex > historyCount-1) {
-	//           historyIndex--;
-	//         }
-	//         clearInput();
-	//         $("#terminalTextInput").val(historyinput[historyIndex]);
-	//         break;
-	//     }
-	//   } else {
-	//     console.log("no old cmds");
-	//   }
+	// 	if (localStorage.getItem('saveinput')){
+	// 		switch (e.keyCode) {
+	// 			case 38:
+	// 				// UP KEY
+	// 				historyIndex--;
+	// 				if (historyIndex < 0){
+	// 					historyIndex++;
+	// 				}
+	// 				clearInput();
+	// 				$("#terminalTextInput").val(historyinput[historyIndex]);
+	// 				formData.ques = historyinput[historyIndex];
+	// 				console.log(historyinput[historyIndex]);
+	// 				break;
+	// 			case 40:
+	// 				// DOWN KEY
+	// 				historyIndex++;
+	// 				if (historyIndex > historyCount-1) {
+	// 					historyIndex--;
+	// 				}
+	// 				clearInput();
+	// 				$("#terminalTextInput").val(historyinput[historyIndex]);
+	// 				formData.ques = historyinput[historyIndex];
+	// 				console.log(historyinput[historyIndex]);
+	// 				break;
+	// 		}
+	// 	} else {
+	// 		console.log("no old cmds");
+	// 	}
 	// };
 	// save and retrieve data from storage - end
 
@@ -298,7 +294,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 					clearInput();
 					// Use your api.ai url else u'll train my bot
 					// check out bot.php file
-					var url = 'https://chat-bot-1.herokuapp.com/mybot';
+					var url = 'https://bot.foofys.com/mybot';
 					$http({
 						method: 'POST',
 						url: url,
@@ -314,6 +310,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 						$scope.posts = data;
 						// console.log($scope.posts);
 						var speechData = $scope.posts.output.speech;
+						speechData = speechData.replace(new RegExp('\r?\n','g'), '<br />');
 						var action = $scope.posts.action;
 						var params = $scope.posts.parameters;
 						switch(action) {
@@ -432,7 +429,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 		// Main function to check the entered text and assign it to the correct function
 		var checkWord = function() {
 			textInputValue = formData.ques.trim(); //get the text from the text input to a variable
-			textInputValueLowerCase = textInputValue.toLowerCase(); //get the lower case of the string
+			textInputValueLowerCase = textInputValue; //get the lower case of the string
 			showSpinner();
 
 			//event.preventDefault();
@@ -452,6 +449,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 				hideSpinner();
 			}
 		};
+
 		checkWord();
 	};
 
