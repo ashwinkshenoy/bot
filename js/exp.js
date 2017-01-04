@@ -293,7 +293,6 @@ app.controller('PostsCtrl', function($scope, $http) {
 				default:
 					clearInput();
 					// Use your api.ai url else u'll train my bot
-					// check out bot.php file
 					var url = 'http://bot.foofys.com/mybot';
 					$http({
 						method: 'POST',
