@@ -167,7 +167,7 @@ app.controller('PostsCtrl', function($scope, $http) {
 	showSpinner();
 	$http({
 		method: 'POST',
-		url: 'http://bot.foofys.com/mybot',
+		url: 'https://bot.foofys.com/mybot',
 		data: {
 			'query': 'Hi',
 			'sessionId': mysession
@@ -453,4 +453,3 @@ app.controller('PostsCtrl', function($scope, $http) {
 	};
 
 });
-
