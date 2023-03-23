@@ -1,3 +1,7 @@
+// Change Your Org and Authorization key
+const OpenAIOrg = 'org-YuvVGVdgcYf66FM25ADNAwhU';
+const AuthorizationKey = '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';
+
 var app = angular.module('mainApp', []);
 
 app.config([
@@ -116,9 +120,9 @@ app.controller('PostsCtrl', function ($scope, $http) {
   };
 
   if (localStorage.getItem('saveinput')) {
-    let historyIndex = JSON.parse(localStorage.getItem('saveinput')).length;
-    let historyCount = JSON.parse(localStorage.getItem('saveinput')).length;
-    let historyinput = JSON.parse(localStorage.getItem('saveinput'));
+    var historyIndex = JSON.parse(localStorage.getItem('saveinput')).length;
+    var historyCount = JSON.parse(localStorage.getItem('saveinput')).length;
+    var historyinput = JSON.parse(localStorage.getItem('saveinput'));
   }
 
   document.onkeydown = function (e) {
@@ -186,8 +190,8 @@ app.controller('PostsCtrl', function ($scope, $http) {
             },
             headers: {
               'Content-Type': 'application/json',
-              'OpenAI-Organization': 'org-az00G5ivf28Tpj0RMyKNtJJ6',
-              Authorization: 'Bearer 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',
+              'OpenAI-Organization': OpenAIOrg,
+              Authorization: `Bearer ${AuthorizationKey}`,
             },
           })
             .success(function (data, status, headers, config) {
@@ -205,7 +209,7 @@ app.controller('PostsCtrl', function ($scope, $http) {
             })
             .error(function (data, status, headers, config) {
               hideSpinner();
-              addTextToResults('Error occured. Plz Try Again!');
+              addTextToResults('Error occured. Either OpenAI quota exhausted or wrong api credentials...');
               clearInput();
             });
           break;
