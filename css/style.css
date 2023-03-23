@@ -3,7 +3,7 @@ a,
 a:hover,
 a:focus {
   text-decoration: none !important;
-  outline: none!important;
+  outline: none !important;
 }
 
 body {
@@ -14,7 +14,7 @@ body {
 
 .head {
   text-align: center;
-  font-weight: 300;
+  font-weight: 800;
   text-shadow: none;
 }
 
@@ -26,36 +26,36 @@ body {
   font-family: 'craft';
 }
 
-h1{
+h1 {
   font-size: 30px;
   font-weight: 200;
 }
 
-body, h1,h2,h3, p{
-  margin:0;
-  padding:0;
+body,
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+  padding: 0;
 }
 
 .terbot {
   font-family: 'Black Ops One', cursive;
 }
 
-.gradientCont{
-  background: #7d1aff;
-  background: -webkit-linear-gradient(bottom,#fff 60%,#7d1aff 5%);
-  background: -moz-linear-gradient(bottom,#fff 60%,#7d1aff 5%);
-  background: -o-linear-gradient(bottom,#fff 60%,#7d1aff 5%);
-  background: linear-gradient(bottom,#fff 60%,#7d1aff 5%);
-  width:100%;
-  /* height: 200px; */
+.gradientCont {
+  background-image: linear-gradient(to top, #c471f5 0%, #fa71cd 100%);
+  width: 100%;
+  height: 400px;
 }
 
-.mainCont{
+.mainCont {
   width: 60%;
   margin: 0 auto;
 }
 
-.mainCont h2{
+.mainCont h2 {
   display: inline-block;
   width: 100%;
   text-align: center;
@@ -66,36 +66,38 @@ body, h1,h2,h3, p{
   opacity: 0;
 }
 
-.mainCont h3{
+.mainCont h3 {
   text-align: center;
   font-weight: 400;
   font-size: 18px;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255, 255, 255, 0.75);
   margin: 0 0 60px 0;
   opacity: 0;
 }
 
-.terminalCont{
-  background: #000;
+.terminalCont {
+  background-blend-mode: soft-light;
+  background: rgb(0 0 0 / 85%);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   width: 100%;
   border-radius: 0px;
   padding: 12px 0 0 0;
   font-family: 'Roboto Mono', monospace;
-  /* height: 100%; */
-  border-radius: 0 0 4px 4px;
 }
 
-.userEnteredText{
-  color: rgba(255,255,255,0.5);
+.userEnteredText {
+  color: rgba(255, 255, 255, 0.5);
   margin: 0;
   padding: 0;
   display: inline-block;
 }
 
-#terminalResultsCont{
-  background: #000;
+#terminalResultsCont {
+  background: transparent;
   width: 100%;
-  height: 350px;
+  height: 500px;
   padding: 12px;
   overflow-y: auto;
   resize: none;
@@ -103,25 +105,30 @@ body, h1,h2,h3, p{
   font-size: 14px;
   line-height: 28px;
   display: block;
-  color: rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
 }
 
-#terminalResultsCont a{
-  color: rgba(255,255,255,0.9);
+#terminalResultsCont a {
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
 }
 
-#terminalResultsCont a:hover{
+#terminalResultsCont a:hover {
   text-decoration: underline;
 }
 
-#terminalTextInput{
+#terminalTextInput {
   background: black;
+  background-blend-mode: soft-light;
+  background: rgb(0 0 0 / 85%);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   display: block;
   border: none;
-  border-top: 1px solid rgba(255,255,255,0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0 0 4px 4px;
-  width: 60%;
+  width: 100%;
   color: white;
   padding: 18px;
   font-size: 14px;
@@ -131,20 +138,20 @@ body, h1,h2,h3, p{
 }
 
 /* Make me responsive */
-@media screen and (max-width: 768px){
-  .mainCont{
+@media screen and (max-width: 768px) {
+  .mainCont {
     width: 90%;
     padding: 0 0;
   }
-  .mainCont h2{
+  .mainCont h2 {
     font-size: 32px;
     margin: 40px 0 0 0;
   }
-  .mainCont h3{
+  .mainCont h3 {
     font-size: 16px;
     margin: 0 0 40px 0;
   }
-  #terminalReslutsCont{
+  #terminalReslutsCont {
     height: 100%;
   }
   .bar,
@@ -156,7 +163,11 @@ body, h1,h2,h3, p{
 .bar {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  background: #f5f5dc;
+  background-blend-mode: soft-light;
+  background: rgb(255 255 255 / 25%);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(5px);
   width: 60%;
   margin: 0px auto;
   padding: 3px 10px;
@@ -168,12 +179,12 @@ body, h1,h2,h3, p{
   height: 10px;
   border-radius: 100rem;
   display: inline-block;
-  margin-right: .3rem;
+  margin-right: 0.3rem;
   cursor: pointer;
 }
 
 .bubble:hover {
-  opacity: .6;
+  opacity: 0.6;
 }
 
 .bar .red {
@@ -200,6 +211,7 @@ body, h1,h2,h3, p{
   width: 100%;
   bottom: 0;
   padding: 15px;
+  z-index: -1;
 }
 
 .foo-txt {
@@ -273,18 +285,15 @@ body, h1,h2,h3, p{
 }
 
 .img_vid {
-  position: absolute;
-  top: 200px;
-  width: 270px;
-  height: 400px;
-  overflow: auto;
+  opacity: 0;
+  z-index: -11;
 }
 
 .img_vid::-webkit-scrollbar {
   width: 8px;
 }
 
-.img_vid::-webkit-scrollbar-track{
+.img_vid::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 1px #7d1aff;
   border-radius: 10px;
 }
@@ -295,7 +304,7 @@ body, h1,h2,h3, p{
   -webkit-box-shadow: inset 0 0 6px #7d1aff;
 }
 
-.res_star{
+.res_star {
   margin-bottom: 5px;
   margin-top: 10px;
 }
@@ -364,14 +373,13 @@ body, h1,h2,h3, p{
 }
 
 #suggestion span {
-  background: #2196F3;
+  background: #2196f3;
   padding: 10px 20px;
   border-radius: 20px;
   cursor: pointer;
   margin-right: 10px;
 }
 /* Suggestions */
-
 
 /* Keyframes */
 @-webkit-keyframes loading-1 {
